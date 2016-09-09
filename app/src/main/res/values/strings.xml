@@ -5,4 +5,6 @@
     <string name="head">fonts/head.ttf</string>
     <string name="roboto_head">fonts/aavantelt_light.ttf</string>
 
+    <string name="big_cover_content_description">Big cover</string>
+
 </resources>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.fragments.FilmFragment;
+import com.ekaterinachubarova.films1.models.Film;
 
 public class FilmActivity extends AppCompatActivity {
 
@@ -20,12 +21,13 @@ public class FilmActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.container);
 
-        int id = Integer.parseInt(getIntent().getStringExtra(FilmFragment.POSITION));
+
+        Film film = getIntent().getParcelableExtra(FilmFragment.FILM_PARS);
+
 
 
         if (fragment == null) {
-            //fragment = new FilmFragment();
-            fragmentManager.beginTransaction().add(R.id.container, FilmFragment.newInstance(id)).commit();
+            fragmentManager.beginTransaction().add(R.id.container, FilmFragment.newInstance(film)).commit();
         }
     }
 }

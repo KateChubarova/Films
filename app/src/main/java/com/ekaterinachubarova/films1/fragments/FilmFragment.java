@@ -19,11 +19,12 @@ import com.squareup.picasso.Picasso;
  */
 public class FilmFragment extends Fragment {
     private Film film;
-    public static final String POSITION = "position";
+    public static final String FILM_PARS = "FILM";
 
-    public static FilmFragment newInstance (int id) {
+    public static FilmFragment newInstance (Film film) {
         Bundle args = new Bundle();
-        args.putSerializable(POSITION, id);
+        args.putParcelable(FILM_PARS, film);
+        System.out.println (film.getDescription());
         FilmFragment filmFragment = new FilmFragment();
         filmFragment.setArguments(args);
         return filmFragment;
@@ -32,9 +33,8 @@ public class FilmFragment extends Fragment {
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int id = (int)getArguments().getSerializable(POSITION);
-        System.out.println(id);
-        //film = FilmsLab.get().getFilm(id);
+        film = getArguments().getParcelable(FILM_PARS);
+
     }
 
     @Override
@@ -43,19 +43,14 @@ public class FilmFragment extends Fragment {
 
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
 
-        TextView enName = (TextView)v.findViewById(R.id.en_name_film);
-        enName.setTypeface(face);
-        TextView rusName = (TextView)v.findViewById(R.id.rus_name_film);
-        rusName.setTypeface(face);
-        ImageView filmImage = (ImageView)v.findViewById(R.id.film_image);
-        TextView date = (TextView)v.findViewById(R.id.date_film);
+        TextView name = (TextView)v.findViewById(R.id.name);
+        name.setTypeface(face);
+        ImageView filmImage = (ImageView)v.findViewById(R.id.big_cover);
+        TextView date = (TextView)v.findViewById(R.id.premire);
         date.setTypeface(face);
-        TextView description = (TextView)v.findViewById(R.id.description_film);
+        TextView description = (TextView)v.findViewById(R.id.description);
         description.setTypeface(face);
-
-
-        enName.setText(film.getNameEng());
-        rusName.setText(film.getNameRus());
+        name.setText(film.getNameEng() + " - " + film.getNameRus());
         date.setText(film.getPremiere());
         description.setText(film.getDescription());
 

@@ -13,6 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="com.ekaterinachubarova.films1.SugarOrmTestApplication"
         android:theme="@style/AppTheme"
         >
         <activity android:name=".activities.MainActivity"
@@ -25,6 +26,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.FilmActivity"></activity>
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="films.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.ekaterinachubarova.films1.models" />
+
 
 
     </application>
