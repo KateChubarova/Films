@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Films1</string>
+    <string name="url">http://www.mocky.io/v2/57cffac8260000181e650041</string>
+
+    <string name="head">fonts/head.ttf</string>
+    <string name="roboto_head">fonts/aavantelt_light.ttf</string>
+
+</resources>

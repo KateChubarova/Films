@@ -1,0 +1,32 @@
+# --table-start--
+dataClass=com.ekaterinachubarova.films1.models.Film
+tableName=films
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=enName
+columnName=en_name
+# --field-end--
+# --field-start--
+fieldName=rusName
+columnName=rus_name
+# --field-end--
+# --field-start--
+fieldName=description
+columnName=description
+# --field-end--
+# --field-start--
+fieldName=date
+columnName=date
+# --field-end--
+# --field-start--
+fieldName=fileName
+columnName=file
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
