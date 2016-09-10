@@ -10,24 +10,12 @@ import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.fragments.FilmFragment;
 import com.ekaterinachubarova.films1.models.Film;
 
-public class FilmActivity extends AppCompatActivity {
+public class FilmActivity extends SingleFragmentActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.film_activity);
-
-
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.container);
-
-
+    protected Fragment createFragment() {
         Film film = getIntent().getParcelableExtra(FilmFragment.FILM_PARS);
-
-
-
-        if (fragment == null) {
-            fragmentManager.beginTransaction().add(R.id.container, FilmFragment.newInstance(film)).commit();
-        }
+        return new FilmFragment().newInstance(film);
     }
+
 }
