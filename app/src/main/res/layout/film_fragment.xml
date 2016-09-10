@@ -49,8 +49,7 @@
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:visibility="visible"
-                tools:text="David Gilmour" />
+                android:visibility="visible" />
         </FrameLayout>
 
         <TextView
@@ -74,10 +73,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="16dp"
-            android:textStyle="bold"
-            tools:text="David Jon Gilmour, CBE (born 6 March 1946), is an English singer, songwriter, composer, multi-instrumentalist, and record producer. In a career spanning more than 50 years, Gilmour is best known for his work as the guitarist and co-lead vocalist of the progressive rock band Pink Floyd. It was estimated that by 2012 the group had sold over 250 million records worldwide, including 75 million units sold in the United States.
-
-In addition to his work with Pink Floyd, Gilmour has produced a variety of artists, for example the Dream Academy, and has had a solo career. In 2005, Gilmour was made a Commander of the Order of the British Empire (CBE) for his services to music. He was awarded with the Outstanding Contribution title at the 2008 Q Awards. In 2011, Rolling Stone magazine ranked him number 14 in their list of the greatest guitarists of all time. Additionally, Gilmour was voted number 36 in the greatest voices in rock by Planet Rock listeners in 2009." />
+            android:textStyle="bold" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

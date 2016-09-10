@@ -28,21 +28,24 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.Reader;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
 public class MainFragment extends Fragment {
-    private RecyclerView rv;
+    @BindView(R.id.rv) RecyclerView rv;
     private RVAdapter rvAdapter;
     private FilmsLab filmsLab ;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.films_fragment, parent, false);
+        ButterKnife.bind(this, v);
 
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
 
-        rv = (RecyclerView) v.findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 

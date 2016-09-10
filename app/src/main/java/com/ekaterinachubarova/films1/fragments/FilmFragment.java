@@ -14,12 +14,20 @@ import com.ekaterinachubarova.films1.models.Film;
 import com.ekaterinachubarova.films1.models.FilmsLab;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+
 /**
  * Created by ekaterinachubarova on 08.09.16.
  */
 public class FilmFragment extends Fragment {
     private Film film;
     public static final String FILM_PARS = "FILM";
+
+    @BindView(R.id.name) TextView name;
+    @BindView(R.id.big_cover) ImageView filmImage;
+    @BindView(R.id.premire) TextView date;
+    @BindView(R.id.description) TextView description;
+
 
     public static FilmFragment newInstance (Film film) {
         Bundle args = new Bundle();
@@ -43,12 +51,8 @@ public class FilmFragment extends Fragment {
 
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
 
-        TextView name = (TextView)v.findViewById(R.id.name);
         name.setTypeface(face);
-        ImageView filmImage = (ImageView)v.findViewById(R.id.big_cover);
-        TextView date = (TextView)v.findViewById(R.id.premire);
         date.setTypeface(face);
-        TextView description = (TextView)v.findViewById(R.id.description);
         description.setTypeface(face);
         name.setText(film.getNameEng() + " - " + film.getNameRus());
         date.setText(film.getPremiere());

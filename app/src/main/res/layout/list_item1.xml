@@ -57,8 +57,7 @@
                 android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                tools:text="psychedelic, progressive, art rock" />
+                android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
 

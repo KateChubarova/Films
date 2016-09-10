@@ -68,6 +68,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
+        
         TextView enName;
         ImageView filmImage;
         TextView year;
