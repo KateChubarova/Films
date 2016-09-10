@@ -1,4 +1,4 @@
-package com.ekaterinachubarova.films1;
+package com.ekaterinachubarova.films1.application;
 
 import android.content.res.Configuration;
 
@@ -25,7 +25,6 @@ public class SugarOrmTestApplication extends SugarApp {
         SugarContext.init(getApplicationContext());
         SugarDb sugarDb = new SugarDb(getApplicationContext());
         new File(sugarDb.getDB().getPath()).delete();
-        //Model.findById(Model.class, (long) 1);
         Film.findById(Film.class, (long) 1);
     }
 

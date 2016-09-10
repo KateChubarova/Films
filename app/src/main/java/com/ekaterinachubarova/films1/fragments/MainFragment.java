@@ -12,13 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.activities.FilmActivity;
-import com.ekaterinachubarova.films1.activities.MainActivity;
 import com.ekaterinachubarova.films1.adapters.RVAdapter;
 import com.ekaterinachubarova.films1.adapters.RecyclerItemClickListener;
 import com.ekaterinachubarova.films1.models.FilmsLab;
@@ -27,7 +24,6 @@ import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -39,7 +35,6 @@ public class MainFragment extends Fragment {
     private RecyclerView rv;
     private RVAdapter rvAdapter;
     private FilmsLab filmsLab ;
-    private Context context = getActivity();
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -68,7 +63,6 @@ public class MainFragment extends Fragment {
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
                     }
                 })
         );
@@ -111,6 +105,9 @@ public class MainFragment extends Fragment {
         protected void onPostExecute(Void result) {
             rvAdapter = new RVAdapter(filmsLab.getFilms(), getActivity());
             rv.setAdapter(rvAdapter);
+
+            filmsLab.saveFilms();
+            //filmsLab.coutAllFilms();
         }
 
     }

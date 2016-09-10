@@ -28,7 +28,16 @@ public class FilmsLab extends SugarRecord{
 
     public void saveFilms () {
         for (int i=0; i<films.size(); i++) {
-            films.get(i).save();
+            films.get(i).setId(films.get(i).save());
         }
     }
+
+//    public void coutAllFilms (){
+//
+//        List<Film> books = Film.listAll(Film.class);
+//
+//        for (int i=0; i<books.size(); i++) {
+//            System.out.println(books.get(i).getNameRus());
+//        }
+//    }
 }
