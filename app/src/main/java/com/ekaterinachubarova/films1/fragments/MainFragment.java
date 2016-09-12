@@ -44,8 +44,6 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.films_fragment, parent, false);
         ButterKnife.bind(this, v);
 
-        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
@@ -84,12 +82,12 @@ public class MainFragment extends Fragment {
 
             OkHttpClient client = new OkHttpClient();
             Reader answer = null;
-
+            Response response = null;
+            
             Request request = new Request.Builder()
                     .url(params[0])
                     .build();
 
-            Response response = null;
             try {
                 response = client.newCall(request).execute();
                 answer =  response.body().charStream();
@@ -109,7 +107,7 @@ public class MainFragment extends Fragment {
             rvAdapter = new RVAdapter(filmsLab.getFilms(), getActivity());
             rv.setAdapter(rvAdapter);
 
-            filmsLab.saveFilms();
+            //filmsLab.saveFilms();
             //filmsLab.coutAllFilms();
         }
 
