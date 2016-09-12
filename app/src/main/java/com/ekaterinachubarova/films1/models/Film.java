@@ -20,10 +20,7 @@ import java.util.List;
  */
 @Table(name = "film")
 public class Film extends SugarRecord implements Parcelable{
-
-
     private Long id;
-
     @SerializedName("name")
     @Expose
     private String nameRus;

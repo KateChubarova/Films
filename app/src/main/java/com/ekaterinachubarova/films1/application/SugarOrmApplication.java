@@ -12,7 +12,7 @@ import java.io.File;
 /**
  * Created by ekaterinachubarova on 09.09.16.
  */
-public class SugarOrmTestApplication extends SugarApp {
+public class SugarOrmApplication extends SugarApp {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
