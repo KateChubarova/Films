@@ -41,7 +41,7 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.ekaterinachubarova.films1.models" />
 
-
+        <service android:name=".broadcast.FilmsUpdateService" android:enabled="true"></service>
 
     </application>
 

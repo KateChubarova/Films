@@ -33,7 +33,6 @@ public class FilmFragment extends Fragment {
     public static FilmFragment newInstance (Film film) {
         Bundle args = new Bundle();
         args.putParcelable(FILM_PARS, film);
-        System.out.println (film.getDescription());
         FilmFragment filmFragment = new FilmFragment();
         filmFragment.setArguments(args);
         return filmFragment;

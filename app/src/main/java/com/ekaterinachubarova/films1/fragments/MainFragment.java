@@ -71,6 +71,8 @@ public class MainFragment extends Fragment {
         return v;
     }
 
+
+
     public class AsyncHttpTask extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -83,7 +85,7 @@ public class MainFragment extends Fragment {
             OkHttpClient client = new OkHttpClient();
             Reader answer = null;
             Response response = null;
-            
+
             Request request = new Request.Builder()
                     .url(params[0])
                     .build();
@@ -106,16 +108,14 @@ public class MainFragment extends Fragment {
         protected void onPostExecute(Void result) {
             rvAdapter = new RVAdapter(filmsLab.getFilms(), getActivity());
             rv.setAdapter(rvAdapter);
-
-            //filmsLab.saveFilms();
-            //filmsLab.coutAllFilms();
         }
 
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null;
     }
+
+
 }

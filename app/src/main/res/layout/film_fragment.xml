@@ -62,7 +62,7 @@
             android:paddingEnd="16dp"
             android:paddingStart="16dp"
             android:paddingTop="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/description"
