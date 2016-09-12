@@ -15,6 +15,7 @@ import com.ekaterinachubarova.films1.models.FilmsLab;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by ekaterinachubarova on 08.09.16.
@@ -48,6 +49,7 @@ public class FilmFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.film_fragment, parent, false);
+        ButterKnife.bind(this, v);
 
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
 
