@@ -1,16 +1,12 @@
-package com.ekaterinachubarova.films1.activities;
+package com.ekaterinachubarova.films1.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.ekaterinachubarova.films1.R;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by ekaterinachubarova on 10.09.16.

@@ -1,6 +1,6 @@
 package com.ekaterinachubarova.films1.config;
 
-import com.ekaterinachubarova.films1.fragments.MainFragment;
+import com.ekaterinachubarova.films1.fragment.MainFragment;
 
 import javax.inject.Singleton;
 

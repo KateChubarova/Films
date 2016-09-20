@@ -1,21 +1,16 @@
-package com.ekaterinachubarova.films1.activities;
+package com.ekaterinachubarova.films1.activity;
 
 import android.app.Fragment;
 
-import com.ekaterinachubarova.films1.fragments.MainFragment;
-
-import butterknife.ButterKnife;
+import com.ekaterinachubarova.films1.fragment.MainFragment;
 
 
 /**
  * Created by ekaterinachubarova on 08.09.16.
  */
 public class MainActivity extends SingleFragmentActivity {
-    //protected OnBackPressedListener onBackPressedListener;
-
     @Override
     protected Fragment createFragment() {
         return new MainFragment();
     }
-
 }

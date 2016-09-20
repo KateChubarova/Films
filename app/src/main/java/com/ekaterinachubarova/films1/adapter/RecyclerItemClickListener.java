@@ -1,4 +1,4 @@
-package com.ekaterinachubarova.films1.adapters;
+package com.ekaterinachubarova.films1.adapter;
 
 /**
  * Created by ekaterinachubarova on 08.09.16.

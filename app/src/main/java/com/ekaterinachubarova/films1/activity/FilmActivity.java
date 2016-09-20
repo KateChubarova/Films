@@ -1,10 +1,9 @@
-package com.ekaterinachubarova.films1.activities;
+package com.ekaterinachubarova.films1.activity;
 
 import android.app.Fragment;
-import android.view.Menu;
 
-import com.ekaterinachubarova.films1.fragments.FilmFragment;
 import com.ekaterinachubarova.films1.rest.model.Film;
+import com.ekaterinachubarova.films1.fragment.FilmFragment;
 
 public class FilmActivity extends SingleFragmentActivity {
 

@@ -1,7 +1,7 @@
 package com.ekaterinachubarova.films1;
 
 import android.app.Application;
-import android.content.Context;
+import android.app.Fragment;
 
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.config.ApplicationModule;
@@ -14,8 +14,8 @@ import com.ekaterinachubarova.films1.config.DaggerAppComponent;
 public class FilmsApplication extends Application{
     private AppComponent appComponent;
 
-    public static AppComponent getAppComponent(Context context) {
-        return ((FilmsApplication) context.getApplicationContext()).appComponent;
+    public static AppComponent getAppComponent(Fragment context) {
+        return ((FilmsApplication) context.getActivity().getApplicationContext()).appComponent;
     }
 
     @Override
