@@ -1,6 +1,5 @@
 package com.ekaterinachubarova.films1.rest.model;
 
-import com.ekaterinachubarova.films1.rest.model.Film;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
@@ -18,6 +17,10 @@ public class FilmsLab extends SugarRecord{
 
     public List<Film> getFilms() {
         return films;
+    }
+
+    public FilmsLab (List <Film> films) {
+        this.films = films;
     }
 
     public void setFilms (List<Film> films) {

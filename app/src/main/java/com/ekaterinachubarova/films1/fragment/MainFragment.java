@@ -19,15 +19,15 @@ import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by ekaterinachubarova on 10.09.16.
@@ -40,6 +40,18 @@ public class MainFragment extends Fragment {
     @Inject
     protected RetrofitService filmService;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -50,21 +62,8 @@ public class MainFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
+        filmService.getFilms();
 
-        Call<FilmsLab> call = filmService.getFilms();
-
-        call.enqueue(new Callback<FilmsLab>() {
-            @Override
-            public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
-                films = response.body().getFilms();
-                rvAdapter = new RVAdapter(films, getActivity());
-                rv.setAdapter(rvAdapter);
-            }
-            @Override
-            public void onFailure(Call<FilmsLab> call, Throwable t) {
-
-            }
-        });
 
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), rv ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -83,14 +82,22 @@ public class MainFragment extends Fragment {
         return v;
     }
 
+    @Subscribe
+    public void setAdapter (FilmsLab message) {
+        films = message.getFilms();
+        rvAdapter = new RVAdapter(films, getActivity());
+        rv.setAdapter(rvAdapter);
+    }
+
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+
+
     protected void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
-
 }
