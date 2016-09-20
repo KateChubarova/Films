@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto/android">
+    <item
+        android:id="@+id/menuRefresh"
+        android:title="Action"
+        android:icon="@mipmap/ic_launcher"
+        compat:actionViewClass="android.widget.ImageView"
+        compat:showAsAction="always" />
+</menu>

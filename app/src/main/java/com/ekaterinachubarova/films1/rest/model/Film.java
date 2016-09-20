@@ -1,6 +1,5 @@
-package com.ekaterinachubarova.films1.models;
+package com.ekaterinachubarova.films1.rest.model;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,9 +9,6 @@ import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**
@@ -20,7 +16,7 @@ import java.util.List;
  */
 @Table(name = "film")
 public class Film extends SugarRecord implements Parcelable{
-    private Long id;
+    //private Long id;
     @SerializedName("name")
     @Expose
     private String nameRus;
@@ -42,7 +38,7 @@ public class Film extends SugarRecord implements Parcelable{
     String description;
 
 
-    public List<Film> results;
+    //public List<Film> results;
 
 
     //private Date date;
@@ -62,7 +58,7 @@ public class Film extends SugarRecord implements Parcelable{
         nameEng = in.readString();
         premiere = in.readString();
         description = in.readString();
-        results = in.createTypedArrayList(Film.CREATOR);
+        //results = in.createTypedArrayList(Film.CREATOR);
     }
 
     public static final Creator<Film> CREATOR = new Creator<Film>() {
@@ -120,14 +116,14 @@ public class Film extends SugarRecord implements Parcelable{
         this.premiere = premiere;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    @Override
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
 
     @Override
@@ -142,7 +138,7 @@ public class Film extends SugarRecord implements Parcelable{
         parcel.writeString(nameEng);
         parcel.writeString(premiere);
         parcel.writeString(description);
-        parcel.writeTypedList(results);
+        //parcel.writeTypedList(results);
     }
 }
 

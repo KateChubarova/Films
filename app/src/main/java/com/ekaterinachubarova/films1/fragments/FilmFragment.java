@@ -1,17 +1,25 @@
 package com.ekaterinachubarova.films1.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ekaterinachubarova.films1.R;
-import com.ekaterinachubarova.films1.models.Film;
-import com.ekaterinachubarova.films1.models.FilmsLab;
+import com.ekaterinachubarova.films1.activities.MainActivity;
+import com.ekaterinachubarova.films1.rest.model.Film;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -43,6 +51,8 @@ public class FilmFragment extends Fragment {
         super.onCreate(savedInstanceState);
         film = getArguments().getParcelable(FILM_PARS);
 
+        setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -62,10 +72,35 @@ public class FilmFragment extends Fragment {
 
         Picasso.with(getActivity())
                 .load(film.getImageUrl())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.videocamera)
+                .error(R.drawable.videocamera)
                 .into(filmImage);;
 
         return v;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+        }
+        return false;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (!getResources().getBoolean(R.bool.is_tablet)) {
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setHomeButtonEnabled(true);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.setDisplayUseLogoEnabled(true);
+            }
+        }
     }
 }

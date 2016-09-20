@@ -1,6 +1,6 @@
 package com.ekaterinachubarova.films1.serializer;
 
-import com.ekaterinachubarova.films1.models.Film;
+import com.ekaterinachubarova.films1.rest.model.Film;
 import java.util.List;
 
 /**

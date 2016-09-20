@@ -1,13 +1,11 @@
-package com.ekaterinachubarova.films1.models;
+package com.ekaterinachubarova.films1.rest.model;
 
-import android.content.Context;
-
+import com.ekaterinachubarova.films1.rest.model.Film;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,6 +18,10 @@ public class FilmsLab extends SugarRecord{
 
     public List<Film> getFilms() {
         return films;
+    }
+
+    public void setFilms (List<Film> films) {
+        this.films = films;
     }
 
 

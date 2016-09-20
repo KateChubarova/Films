@@ -1,5 +1,5 @@
 # --table-start--
-dataClass=com.ekaterinachubarova.films1.models.Film
+dataClass=com.ekaterinachubarova.films1.rest.model.Film
 tableName=films
 # --table-fields-start--
 # --field-start--
