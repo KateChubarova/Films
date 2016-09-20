@@ -8,4 +8,5 @@
     <string name="big_cover_content_description">Big cover</string>
     <string name="action_back">Back</string>
 
+    <string name="fragment_image_trans">fragment_image_transition</string>
 </resources>

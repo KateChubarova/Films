@@ -1,4 +1,4 @@
-package com.ekaterinachubarova.films1.activity;
+package com.ekaterinachubarova.films1.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,7 +11,7 @@ import com.ekaterinachubarova.films1.R;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class SingleBaseFragmentActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
@@ -26,6 +26,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             fragment = createFragment();
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
+
     }
 
     @Override

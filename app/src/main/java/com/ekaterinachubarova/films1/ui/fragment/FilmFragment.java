@@ -1,4 +1,4 @@
-package com.ekaterinachubarova.films1.fragment;
+package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.app.Fragment;
 import android.graphics.Typeface;
@@ -46,9 +46,7 @@ public class FilmFragment extends Fragment {
         super.onCreate(savedInstanceState);
         film = getArguments().getParcelable(FILM_PARS);
         setHasOptionsMenu(true);
-
     }
-
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.film_fragment, parent, false);
@@ -64,11 +62,14 @@ public class FilmFragment extends Fragment {
         description.setText(film.getDescription());
 
 
+
         Picasso.with(getActivity())
                 .load(film.getImageUrl())
                 .placeholder(R.drawable.videocamera)
                 .error(R.drawable.videocamera)
-                .into(filmImage);;
+                .into(filmImage);
+
+        filmImage.setTransitionName(getString(R.string.fragment_image_trans));
 
         return v;
     }
@@ -81,7 +82,6 @@ public class FilmFragment extends Fragment {
         }
         return false;
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
