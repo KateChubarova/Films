@@ -1,6 +1,5 @@
 package com.ekaterinachubarova.films1.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment{
     @BindView(R.id.rv) RecyclerView rv;
     private RVAdapter rvAdapter;
     private List<Film> films;
@@ -89,15 +88,8 @@ public class MainFragment extends Fragment {
         rv.setAdapter(rvAdapter);
     }
 
-    @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
-
-
-    protected void setUpComponent(AppComponent appComponent) {
+    public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
 }

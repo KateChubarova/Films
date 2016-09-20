@@ -45,7 +45,6 @@ public class FilmFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         film = getArguments().getParcelable(FILM_PARS);
-
         setHasOptionsMenu(true);
 
     }
