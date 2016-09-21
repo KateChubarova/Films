@@ -4,8 +4,10 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +29,14 @@ public class FilmFragment extends Fragment {
     private Film film;
     public static final String FILM_PARS = "FILM";
 
-    @BindView(R.id.name) TextView name;
+    //private CollapsingToolbarLayout collapsingToolbarLayout = null;
+
+    //@BindView(R.id.name) TextView name;
     @BindView(R.id.big_cover) ImageView filmImage;
     @BindView(R.id.premire) TextView date;
     @BindView(R.id.description) TextView description;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
 
 
     public static FilmFragment newInstance (Film film) {
@@ -52,12 +58,21 @@ public class FilmFragment extends Fragment {
         View v = inflater.inflate(R.layout.film_fragment, parent, false);
         ButterKnife.bind(this, v);
 
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        toolbarTextAppernce();
+
+        collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getNameRus());
+
+
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
 
-        name.setTypeface(face);
+        //name.setTypeface(face);
         date.setTypeface(face);
         description.setTypeface(face);
-        name.setText(film.getNameEng() + " - " + film.getNameRus());
+        //name.setText(film.getNameEng() + " - " + film.getNameRus());
         date.setText(film.getPremiere());
         description.setText(film.getDescription());
 
@@ -72,6 +87,11 @@ public class FilmFragment extends Fragment {
         filmImage.setTransitionName(getString(R.string.fragment_image_trans));
 
         return v;
+    }
+
+    private void toolbarTextAppernce() {
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
     }
 
     @Override

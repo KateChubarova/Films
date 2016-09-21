@@ -55,7 +55,7 @@ public class MainFragment extends BaseFragment{
         rv.setLayoutManager(llm);
 
         filmService.getFilms();
-
+        setHasOptionsMenu(true);
         return v;
     }
 
@@ -70,8 +70,6 @@ public class MainFragment extends BaseFragment{
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
-
-
 
     public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
 
