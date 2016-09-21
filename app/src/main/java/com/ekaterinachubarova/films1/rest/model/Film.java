@@ -8,11 +8,18 @@ import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by ekaterinachubarova on 08.09.16.
  */
-@Table(name = "film")
+@Getter
+@Setter
+@Table
 public class Film extends SugarRecord implements Parcelable{
+    private Long id;
+
     @SerializedName("name")
     @Expose
     private String nameRus;
@@ -33,21 +40,16 @@ public class Film extends SugarRecord implements Parcelable{
     @Expose
     String description;
 
-    public Film(String nameRus, String nameEng, String dateString, String description, String imageUrl) {
-        this.nameRus = nameRus;
-        this.nameEng = nameEng;
-        this.description = description;
-        this.image = imageUrl;
-
-    }
-
     protected Film(Parcel in) {
+        id = in.readLong();
         nameRus = in.readString();
         image = in.readString();
         nameEng = in.readString();
         premiere = in.readString();
         description = in.readString();
     }
+
+    public Film(){}
 
     public static final Creator<Film> CREATOR = new Creator<Film>() {
         @Override
@@ -61,46 +63,6 @@ public class Film extends SugarRecord implements Parcelable{
         }
     };
 
-    public String getNameRus() {
-        return nameRus;
-    }
-
-    public void setNameRus(String nameRus) {
-        this.nameRus = nameRus;
-    }
-
-    public String getNameEng() {
-        return nameEng;
-    }
-
-    public void setNameEng(String nameEng) {
-        this.nameEng = nameEng;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return image;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.image = imageUrl;
-    }
-
-    public String getPremiere() {
-        return premiere;
-    }
-
-    public void setPremiere(String premiere) {
-        this.premiere = premiere;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -113,6 +75,18 @@ public class Film extends SugarRecord implements Parcelable{
         parcel.writeString(nameEng);
         parcel.writeString(premiere);
         parcel.writeString(description);
+        parcel.writeLong(id);
     }
+
+    @Override
+    public Long getId () {
+        return id;
+    }
+
+    @Override
+    public void setId (Long id) {
+        this.id = id;
+    }
+
 }
 

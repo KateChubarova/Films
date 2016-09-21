@@ -1,6 +1,7 @@
 package com.ekaterinachubarova.films1.rest.api;
 
 import com.ekaterinachubarova.films1.rest.model.FilmsLab;
+import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -17,8 +18,10 @@ public interface FilmsApi {
     @GET("57cffac8260000181e650041")
     Call<FilmsLab> getFilmsList();
 
+    //Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
             .build();
 }

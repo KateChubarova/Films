@@ -1,10 +1,10 @@
 package com.ekaterinachubarova.films1.rest.api;
 
 import com.ekaterinachubarova.films1.rest.model.FilmsLab;
+import com.ekaterinachubarova.films1.serializer.FilmSerializer;
 
 import org.greenrobot.eventbus.EventBus;
 
-import dagger.Module;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -13,13 +13,8 @@ import retrofit2.Response;
  * Created by ekaterinachubarova on 19.09.16.
  */
 
-@Module
 public class RetrofitService  {
-    private FilmsLab filmsLab;
-    private final static String TAG = "FilmService";
-
     public RetrofitService () {
-
     }
 
     public void getFilms() {
@@ -29,10 +24,11 @@ public class RetrofitService  {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
                 EventBus.getDefault().post(new FilmsLab(response.body().getFilms()));
+                FilmSerializer.saveFilms(response.body().getFilms());
             }
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-                EventBus.getDefault().post(new FilmsLab(null));
+                //EventBus.getDefault().post(new FilmsLab(FilmSerializer.loadFilms()));
             }
         });
     }

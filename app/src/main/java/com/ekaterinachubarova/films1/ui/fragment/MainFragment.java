@@ -95,7 +95,7 @@ public class MainFragment extends BaseFragment{
             holder.enName.setText(films.get(position).getNameEng());
             holder.year.setText(films.get(position).getPremiere());
             Picasso.with(getActivity())
-                    .load(films.get(position).getImageUrl())
+                    .load(films.get(position).getImage())
                     .error(R.mipmap.ic_launcher)
                     .into(holder.filmImage);
             holder.progressBar.setVisibility(View.INVISIBLE);

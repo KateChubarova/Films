@@ -70,7 +70,7 @@ public class FilmFragment extends Fragment {
         description.setText(film.getDescription());
 
         Picasso.with(getActivity())
-                .load(film.getImageUrl())
+                .load(film.getImage())
                 .placeholder(R.drawable.videocamera)
                 .error(R.drawable.videocamera)
                 .into(filmImage);
