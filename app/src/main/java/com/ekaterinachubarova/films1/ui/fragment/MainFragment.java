@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ekaterinachubarova.films1.FilmsApplication;
 import com.ekaterinachubarova.films1.R;
@@ -23,9 +24,13 @@ import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
 import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
 import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -56,8 +61,15 @@ public class MainFragment extends BaseFragment{
     }
 
     @Subscribe
-    public void setAdapter (FilmsLab message) {
-        films = message.getFilms();
+    public void onEvent (FilmsLab message) {
+        if (message.getFilms() != null) {
+            films = message.getFilms();
+            setAdapter();
+        } else {
+            Toast.makeText(getActivity(), "Loading message is failed", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void setAdapter () {
         rvAdapter = new RVAdapter();
         rv.setAdapter(rvAdapter);
     }

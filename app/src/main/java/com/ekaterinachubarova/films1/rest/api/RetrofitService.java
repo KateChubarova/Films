@@ -32,7 +32,7 @@ public class RetrofitService  {
             }
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-
+                EventBus.getDefault().post(new FilmsLab(null));
             }
         });
     }
