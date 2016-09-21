@@ -26,7 +26,6 @@ public abstract class SingleBaseFragmentActivity extends AppCompatActivity {
             fragment = createFragment();
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-
     }
 
     @Override

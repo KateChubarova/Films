@@ -1,1 +1,12 @@
-/build
+# Gradle artifacts
+.gradle
+build/
+
+# IntelliJ / Android Studio project files
+*.iml
+.idea/
+out
+
+local.properties
+
+.DS_Store

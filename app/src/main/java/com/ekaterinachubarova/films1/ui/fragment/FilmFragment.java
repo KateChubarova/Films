@@ -27,18 +27,15 @@ import butterknife.ButterKnife;
  * Created by ekaterinachubarova on 08.09.16.
  */
 public class FilmFragment extends Fragment {
+
     private Film film;
     public static final String FILM_PARS = "FILM";
 
-    //private CollapsingToolbarLayout collapsingToolbarLayout = null;
-
-    //@BindView(R.id.name) TextView name;
     @BindView(R.id.big_cover) ImageView filmImage;
     @BindView(R.id.premire) TextView date;
     @BindView(R.id.description) TextView description;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
-
 
     public static FilmFragment newInstance (Film film) {
         Bundle args = new Bundle();
@@ -54,30 +51,23 @@ public class FilmFragment extends Fragment {
         film = getArguments().getParcelable(FILM_PARS);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.film_fragment, parent, false);
+        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
         ButterKnife.bind(this, v);
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         toolbarTextAppernce();
 
         collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getNameRus());
-
-
-        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
-
-        //name.setTypeface(face);
         date.setTypeface(face);
         description.setTypeface(face);
-        //name.setText(film.getNameEng() + " - " + film.getNameRus());
         date.setText(film.getPremiere());
         description.setText(film.getDescription());
-
-
 
         Picasso.with(getActivity())
                 .load(film.getImageUrl())

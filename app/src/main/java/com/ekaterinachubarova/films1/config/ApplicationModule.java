@@ -32,9 +32,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public RetrofitService provideWiseApi() {
-
         return new RetrofitService();
-
     }
 }
 

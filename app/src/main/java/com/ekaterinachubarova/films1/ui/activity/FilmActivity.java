@@ -14,5 +14,4 @@ public class FilmActivity extends SingleBaseFragmentActivity {
         Film film = getIntent().getParcelableExtra(FilmFragment.FILM_PARS);
         return FilmFragment.newInstance(film);
     }
-
 }

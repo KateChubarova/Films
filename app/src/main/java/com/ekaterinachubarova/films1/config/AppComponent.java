@@ -13,10 +13,8 @@ import dagger.Component;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface AppComponent {
-    //activity
 
     void inject(MainFragment mainActivity);
 
-    //fragment
 }
 

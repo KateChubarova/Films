@@ -19,15 +19,12 @@ public class RetrofitService  {
     private final static String TAG = "FilmService";
 
     public RetrofitService () {
-        //filmsLab = new FilmsLab();
 
     }
+
     public void getFilms() {
         final FilmsApi filmsApi = FilmsApi.retrofit.create(FilmsApi.class);
         Call<FilmsLab> call = filmsApi.getFilmsList();
-
-        //Call<FilmsLab> call = filmService.getFilms();
-
         call.enqueue(new Callback<FilmsLab>() {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
@@ -38,9 +35,5 @@ public class RetrofitService  {
 
             }
         });
-        //EventBus.getDefault().post(new FilmsLab());
-
     }
-
-
 }

@@ -23,22 +23,18 @@ import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
 import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
 import com.squareup.picasso.Picasso;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
 public class MainFragment extends BaseFragment{
-    @BindView(R.id.rv)
-    RecyclerView rv;
+    @BindView(R.id.rv) protected RecyclerView rv;
     private RVAdapter rvAdapter;
     private List<Film> films;
 
@@ -66,7 +62,6 @@ public class MainFragment extends BaseFragment{
         rv.setAdapter(rvAdapter);
     }
 
-
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
@@ -74,7 +69,6 @@ public class MainFragment extends BaseFragment{
     public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
 
         public RVAdapter(){
-
         }
 
         @Override
@@ -94,8 +88,6 @@ public class MainFragment extends BaseFragment{
                     .into(holder.filmImage);
             holder.progressBar.setVisibility(View.INVISIBLE);
             holder.linearLayout.setTag(position);
-
-
         }
 
         @Override
@@ -103,38 +95,26 @@ public class MainFragment extends BaseFragment{
             return films.size();
         }
 
+        public class PersonViewHolder extends RecyclerView.ViewHolder{
 
-
-
-        public class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-            LinearLayout linearLayout;
-            TextView enName;
-            ImageView filmImage;
-            TextView year;
-            ProgressBar progressBar;
+            @BindView(R.id.list_item) protected LinearLayout linearLayout;
+            @BindView(R.id.name) protected TextView enName;
+            @BindView(R.id.small_cover) protected ImageView filmImage;
+            @BindView(R.id.year) TextView year;
+            @BindView(R.id.cover_progress) ProgressBar progressBar;
             PersonViewHolder(View itemView) {
                 super(itemView);
-                linearLayout = (LinearLayout) itemView.findViewById(R.id.list_item);
-                enName = (TextView)itemView.findViewById(R.id.name);
-                filmImage = (ImageView) itemView.findViewById(R.id.small_cover);
-                year = (TextView) itemView.findViewById(R.id.year);
-                progressBar = (ProgressBar) itemView.findViewById(R.id.cover_progress);
-
-                linearLayout.setOnClickListener(this);
+                ButterKnife.bind(this, itemView);
             }
 
-            @Override
-            public void onClick(View v) {
-
+            @OnClick(R.id.list_item)
+            public void onClick() {
                 Intent intent = new Intent(getActivity(), FilmActivity.class);
                 intent.putExtra(FilmFragment.FILM_PARS, films.get(getAdapterPosition()));
-
                 filmImage.setTransitionName(getString(R.string.fragment_image_trans));
                 Pair<View, String> pair1 = Pair.create((View) filmImage, filmImage.getTransitionName());
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(getActivity(), pair1);
-
                 startActivity(intent, options.toBundle());
             }
         }

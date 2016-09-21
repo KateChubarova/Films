@@ -26,6 +26,4 @@ public class FilmsLab extends SugarRecord{
     public void setFilms (List<Film> films) {
         this.films = films;
     }
-
-
 }
