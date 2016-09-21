@@ -1,6 +1,7 @@
 package com.ekaterinachubarova.films1.ui.activity;
 
-import android.app.Fragment;
+
+import android.support.v4.app.Fragment;
 
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.ui.SingleBaseFragmentActivity;

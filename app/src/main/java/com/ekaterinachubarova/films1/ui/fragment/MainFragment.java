@@ -136,11 +136,11 @@ public class MainFragment extends BaseFragment{
                         makeSceneTransitionAnimation(getActivity(), pair1);
 
                 startActivity(intent, options.toBundle());
-
-
             }
         }
     }
+
+
 
 
 }

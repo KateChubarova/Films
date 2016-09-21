@@ -1,7 +1,7 @@
 package com.ekaterinachubarova.films1;
 
 import android.app.Application;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.config.ApplicationModule;
