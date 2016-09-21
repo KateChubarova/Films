@@ -1,5 +1,6 @@
 package com.ekaterinachubarova.films1.rest.api;
 
+import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 import com.ekaterinachubarova.films1.serializer.FilmSerializer;
 
@@ -23,12 +24,13 @@ public class RetrofitService  {
         call.enqueue(new Callback<FilmsLab>() {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
-                EventBus.getDefault().post(new FilmsLab(response.body().getFilms()));
+                EventBus.getDefault().post(new ReadingEvent(response.body().getFilms(), ReadingEvent.INFORMATION_FROM_NETWORK));
+                FilmSerializer.deleteAllFilms();
                 FilmSerializer.saveFilms(response.body().getFilms());
             }
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-                //EventBus.getDefault().post(new FilmsLab(FilmSerializer.loadFilms()));
+                EventBus.getDefault().post(new ReadingEvent(FilmSerializer.loadFilms(), ReadingEvent.INFORMATION_FROM_DATABASE));
             }
         });
     }

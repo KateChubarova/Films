@@ -70,12 +70,12 @@ public class Film extends SugarRecord implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
         parcel.writeString(nameRus);
         parcel.writeString(image);
         parcel.writeString(nameEng);
         parcel.writeString(premiere);
         parcel.writeString(description);
-        parcel.writeLong(id);
     }
 
     @Override

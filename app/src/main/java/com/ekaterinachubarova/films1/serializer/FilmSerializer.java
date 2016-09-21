@@ -18,6 +18,7 @@ public class FilmSerializer {
          * TODO : заменить на Android RX
          */
         for (int i=0; i<films.size(); i++) {
+            films.get(i).setId((long)i);
             films.get(i).save();
         }
     }

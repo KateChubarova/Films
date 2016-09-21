@@ -1,6 +1,5 @@
 package com.ekaterinachubarova.films1;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.ekaterinachubarova.films1.config.AppComponent;
@@ -16,7 +15,6 @@ import com.orm.SugarContext;
 
 public class FilmsApplication extends SugarApp{
     private AppComponent appComponent;
-    private static Context instance;
 
     public static AppComponent getAppComponent(Fragment context) {
         return ((FilmsApplication) context.getActivity().getApplicationContext()).appComponent;
@@ -36,10 +34,6 @@ public class FilmsApplication extends SugarApp{
     public void onTerminate() {
         super.onTerminate();
         SugarContext.terminate();
-    }
-
-    public static Context get() {
-        return instance;
     }
 
 }

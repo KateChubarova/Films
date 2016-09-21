@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.ekaterinachubarova.films1.FilmsApplication;
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.config.AppComponent;
+import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
-import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
 import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
 import com.squareup.picasso.Picasso;
@@ -61,13 +61,16 @@ public class MainFragment extends BaseFragment{
     }
 
     @Subscribe
-    public void onEvent (FilmsLab message) {
-        if (message.getFilms() != null) {
-            films = message.getFilms();
-            setAdapter();
-        } else {
-            Toast.makeText(getActivity(), "Loading message is failed", Toast.LENGTH_LONG).show();
+    public void onEvent (ReadingEvent event) {
+        if (event.getFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
+            Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
         }
+        if (event.getFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
+            Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
+        }
+        films = event.getFilms();
+        setAdapter();
+
     }
     public void setAdapter () {
         rvAdapter = new RVAdapter();
@@ -122,6 +125,8 @@ public class MainFragment extends BaseFragment{
             @OnClick(R.id.list_item)
             public void onClick() {
                 Intent intent = new Intent(getActivity(), FilmActivity.class);
+
+
                 intent.putExtra(FilmFragment.FILM_PARS, films.get(getAdapterPosition()));
                 filmImage.setTransitionName(getString(R.string.fragment_image_trans));
                 Pair<View, String> pair1 = Pair.create((View) filmImage, filmImage.getTransitionName());
