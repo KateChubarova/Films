@@ -64,19 +64,12 @@ public class MainFragment extends BaseFragment{
 
     @Subscribe
     public void onEvent (ReadingEvent event) {
-        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
-            Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
-        }
-        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
-            Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
-        }
-        films = event.getFilms();
         if (isFirstLoading) {
             isFirstLoading = false;
-            setAdapter();
+            setAdapter(event);
 
         } else if (!isFirstLoading) {
-            setChanges (films);
+            setChanges (event.getFilms());
         }
     }
 
@@ -84,11 +77,17 @@ public class MainFragment extends BaseFragment{
         films.addAll(newFilms);
         rvAdapter.notifyDataSetChanged();
         rvAdapter.setLoaded();
-        rv.getLayoutManager().scrollToPosition(films.size()-1);
     }
 
 
-    public void setAdapter () {
+    public void setAdapter (ReadingEvent event) {
+        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
+            Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
+        }
+        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
+            Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
+        }
+        films = event.getFilms();
         rvAdapter = new RVAdapter();
         rv.setAdapter(rvAdapter);
 
@@ -103,7 +102,6 @@ public class MainFragment extends BaseFragment{
                     public void run() {
                         films.remove(films.size() - 1);
                         rvAdapter.notifyItemRemoved(films.size());
-
                         filmService.getFilms();
                     }
                 }, 5000);
@@ -118,7 +116,7 @@ public class MainFragment extends BaseFragment{
 
     public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private final int VIEW_TYPE_ITEM = 0;
-        private final int VIEW_TYPE_LOADING = 5;
+        private final int VIEW_TYPE_LOADING = 1;
 
         private OnLoadListener mOnLoadMoreListener;
 
@@ -127,10 +125,14 @@ public class MainFragment extends BaseFragment{
         private int lastVisibleItem, totalItemCount;
 
         public RVAdapter(){
+
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
             rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                    if (dy <= 0) return;
+
                     super.onScrolled(recyclerView, dx, dy);
 
                     totalItemCount = linearLayoutManager.getItemCount();
@@ -143,7 +145,6 @@ public class MainFragment extends BaseFragment{
                         isLoading = true;
                     }
                 }
-
             });
         }
 
