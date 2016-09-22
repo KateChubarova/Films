@@ -23,7 +23,6 @@ import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.listener.OnLoadListener;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
-import com.ekaterinachubarova.films1.serializer.FilmSerializer;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
 import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
 import com.squareup.picasso.Picasso;
@@ -45,6 +44,7 @@ public class MainFragment extends BaseFragment{
     @BindView(R.id.rv) protected RecyclerView rv;
     private RVAdapter rvAdapter;
     private List<Film> films;
+    private boolean isFirstLoading = true;
 
     @Inject
     protected RetrofitService filmService;
@@ -59,10 +59,6 @@ public class MainFragment extends BaseFragment{
 
         filmService.getFilms();
 
-        //final RVAdapter rvAdapter = new RVAdapter();
-
-
-
         return v;
     }
 
@@ -75,13 +71,26 @@ public class MainFragment extends BaseFragment{
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
         }
         films = event.getFilms();
-        setAdapter();
+        if (isFirstLoading) {
+            isFirstLoading = false;
+            setAdapter();
 
+        } else if (!isFirstLoading) {
+            setChanges (films);
+        }
     }
+
+    public void setChanges (List<Film> newFilms) {
+        films.addAll(newFilms);
+        rvAdapter.notifyDataSetChanged();
+        rvAdapter.setLoaded();
+        rv.getLayoutManager().scrollToPosition(films.size()-1);
+    }
+
+
     public void setAdapter () {
         rvAdapter = new RVAdapter();
         rv.setAdapter(rvAdapter);
-
 
         rvAdapter.setOnLoadMoreListener(new OnLoadListener() {
             @Override
@@ -89,23 +98,17 @@ public class MainFragment extends BaseFragment{
                 films.add(null);
                 rvAdapter.notifyItemInserted(films.size() - 1);
 
-                //Load more data for reyclerview
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         films.remove(films.size() - 1);
                         rvAdapter.notifyItemRemoved(films.size());
 
-                        films.add(FilmSerializer.getFilm(films.get(3).getId()));
-
-                        rvAdapter.notifyDataSetChanged();
-                        rvAdapter.setLoaded();
+                        filmService.getFilms();
                     }
                 }, 5000);
             }
         });
-
-
     }
 
     public void setUpComponent(AppComponent appComponent) {
@@ -115,7 +118,7 @@ public class MainFragment extends BaseFragment{
 
     public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private final int VIEW_TYPE_ITEM = 0;
-        private final int VIEW_TYPE_LOADING = 1;
+        private final int VIEW_TYPE_LOADING = 5;
 
         private OnLoadListener mOnLoadMoreListener;
 
@@ -140,6 +143,7 @@ public class MainFragment extends BaseFragment{
                         isLoading = true;
                     }
                 }
+
             });
         }
 
@@ -189,11 +193,12 @@ public class MainFragment extends BaseFragment{
             public LoadingViewHolder(View itemView) {
                 super(itemView);
                 progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
+                progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary),
+                        android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 
         public class PersonViewHolder extends RecyclerView.ViewHolder{
-
             @BindView(R.id.list_item) protected LinearLayout linearLayout;
             @BindView(R.id.name) protected TextView enName;
             @BindView(R.id.small_cover) protected ImageView filmImage;
@@ -203,7 +208,6 @@ public class MainFragment extends BaseFragment{
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
-
             @OnClick(R.id.list_item)
             public void onClick() {
                 Intent intent = new Intent(getActivity(), FilmActivity.class);
@@ -224,6 +228,4 @@ public class MainFragment extends BaseFragment{
             isLoading = false;
         }
     }
-
-
 }
