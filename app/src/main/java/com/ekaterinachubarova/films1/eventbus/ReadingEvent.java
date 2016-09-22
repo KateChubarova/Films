@@ -4,6 +4,7 @@ import com.ekaterinachubarova.films1.rest.model.Film;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,15 +14,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class ReadingEvent {
-    public static final int INFORMATION_FROM_DATABASE = 0;
-    public static final int INFORMATION_FROM_NETWORK = 1;
+    public static final boolean INFORMATION_FROM_DATABASE = false;
+    public static final boolean INFORMATION_FROM_NETWORK = true;
 
     private List<Film> films;
-    private int flag;
+    private boolean flag;
 
-    public ReadingEvent(List<Film> films, int flag) {
-        this.films = films;
-        this.flag = flag;
-    }
 }

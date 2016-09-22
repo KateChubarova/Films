@@ -51,4 +51,5 @@ dependencies {
     compile 'com.github.satyan:sugar:1.4'
     provided "org.projectlombok:lombok:1.12.6"
     apt "org.projectlombok:lombok:1.12.6"
+    compile 'com.github.markomilos:paginate:0.5.1'
 }

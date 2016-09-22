@@ -2,6 +2,7 @@ package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +20,10 @@ import com.ekaterinachubarova.films1.FilmsApplication;
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
+import com.ekaterinachubarova.films1.listener.OnLoadListener;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
+import com.ekaterinachubarova.films1.serializer.FilmSerializer;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
 import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
 import com.squareup.picasso.Picasso;
@@ -52,20 +55,23 @@ public class MainFragment extends BaseFragment{
         ButterKnife.bind(this, v);
         setUpComponent(FilmsApplication.getAppComponent(this));
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         filmService.getFilms();
-        setHasOptionsMenu(true);
+
+        //final RVAdapter rvAdapter = new RVAdapter();
+
+
+
         return v;
     }
 
     @Subscribe
     public void onEvent (ReadingEvent event) {
-        if (event.getFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
+        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
             Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
         }
-        if (event.getFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
+        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
         }
         films = event.getFilms();
@@ -75,39 +81,115 @@ public class MainFragment extends BaseFragment{
     public void setAdapter () {
         rvAdapter = new RVAdapter();
         rv.setAdapter(rvAdapter);
+
+
+        rvAdapter.setOnLoadMoreListener(new OnLoadListener() {
+            @Override
+            public void onLoadMore() {
+                films.add(null);
+                rvAdapter.notifyItemInserted(films.size() - 1);
+
+                //Load more data for reyclerview
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        films.remove(films.size() - 1);
+                        rvAdapter.notifyItemRemoved(films.size());
+
+                        films.add(FilmSerializer.getFilm(films.get(3).getId()));
+
+                        rvAdapter.notifyDataSetChanged();
+                        rvAdapter.setLoaded();
+                    }
+                }, 5000);
+            }
+        });
+
+
     }
 
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
 
-    public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
+
+    public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+        private final int VIEW_TYPE_ITEM = 0;
+        private final int VIEW_TYPE_LOADING = 1;
+
+        private OnLoadListener mOnLoadMoreListener;
+
+        private boolean isLoading;
+        private int visibleThreshold = 1;
+        private int lastVisibleItem, totalItemCount;
 
         public RVAdapter(){
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
+            rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+
+                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        if (mOnLoadMoreListener != null) {
+                            mOnLoadMoreListener.onLoadMore();
+                        }
+                        isLoading = true;
+                    }
+                }
+            });
+        }
+
+        public void setOnLoadMoreListener(OnLoadListener mOnLoadMoreListener) {
+            this.mOnLoadMoreListener = mOnLoadMoreListener;
         }
 
         @Override
-        public PersonViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item1, parent, false);
-            PersonViewHolder pvh = new PersonViewHolder(v);
-            return pvh;
+        public int getItemViewType(int position) {
+            return films.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
         }
 
         @Override
-        public void onBindViewHolder(PersonViewHolder holder, int position) {
-            holder.enName.setText(films.get(position).getNameEng());
-            holder.year.setText(films.get(position).getPremiere());
-            Picasso.with(getActivity())
-                    .load(films.get(position).getImage())
-                    .error(R.mipmap.ic_launcher)
-                    .into(holder.filmImage);
-            holder.progressBar.setVisibility(View.INVISIBLE);
-            holder.linearLayout.setTag(position);
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+            if (viewType == VIEW_TYPE_ITEM) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item1, parent, false);
+                return new PersonViewHolder(v);
+            }  else if (viewType == VIEW_TYPE_LOADING) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_item, parent, false);
+                return new LoadingViewHolder(view);
+            }
+            return null;
         }
 
         @Override
-        public int getItemCount() {
-            return films.size();
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof PersonViewHolder) {
+                PersonViewHolder personViewHolder = (PersonViewHolder) holder;
+                personViewHolder.enName.setText(films.get(position).getNameEng());
+                personViewHolder.year.setText(films.get(position).getPremiere());
+                Picasso.with(getActivity())
+                        .load(films.get(position).getImage())
+                        .error(R.mipmap.ic_launcher)
+                        .into(personViewHolder.filmImage);
+                personViewHolder.progressBar.setVisibility(View.INVISIBLE);
+                personViewHolder.linearLayout.setTag(position);
+
+            } else if (holder instanceof LoadingViewHolder) {
+                LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+                loadingViewHolder.progressBar.setIndeterminate(true);
+            }
+        }
+
+        public class LoadingViewHolder extends RecyclerView.ViewHolder {
+            public ProgressBar progressBar;
+
+            public LoadingViewHolder(View itemView) {
+                super(itemView);
+                progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
+            }
         }
 
         public class PersonViewHolder extends RecyclerView.ViewHolder{
@@ -125,8 +207,6 @@ public class MainFragment extends BaseFragment{
             @OnClick(R.id.list_item)
             public void onClick() {
                 Intent intent = new Intent(getActivity(), FilmActivity.class);
-
-
                 intent.putExtra(FilmFragment.FILM_PARS, films.get(getAdapterPosition()));
                 filmImage.setTransitionName(getString(R.string.fragment_image_trans));
                 Pair<View, String> pair1 = Pair.create((View) filmImage, filmImage.getTransitionName());
@@ -135,9 +215,15 @@ public class MainFragment extends BaseFragment{
                 startActivity(intent, options.toBundle());
             }
         }
+
+        @Override
+        public int getItemCount() {
+            return films == null ? 0 : films.size();
+        }
+        public void setLoaded() {
+            isLoading = false;
+        }
     }
-
-
 
 
 }

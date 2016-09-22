@@ -18,8 +18,12 @@ public class FilmSerializer {
          * TODO : заменить на Android RX
          */
         for (int i=0; i<films.size(); i++) {
-            films.get(i).setId((long)i);
-            films.get(i).save();
+            //films.get(i).setId((long)i);
+
+
+            films.get(i).setId(films.get(i).save());
+
+            System.out.println(Film.findById(Film.class, films.get(i).getId()).getNameRus());
         }
     }
 
@@ -33,8 +37,9 @@ public class FilmSerializer {
         film.delete();
     }
 
-    public static void getFilm (Long id){
-        Film film = Film.findById(Film.class, id);
+    public static Film getFilm (Long id){
+        System.out.println(id);
+        return Film.findById(Film.class, id);
     }
 
     public static void deleteAllFilms () {
