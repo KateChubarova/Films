@@ -62,7 +62,6 @@ public class FilmFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         toolbarTextAppernce();
-
         collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getNameRus());
         date.setTypeface(face);
         description.setTypeface(face);

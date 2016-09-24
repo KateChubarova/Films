@@ -28,15 +28,6 @@ public class RetrofitService  {
                 .build().create(FilmsApi.class);
     }
     public void getFilms() {
-//        try {
-//            if (filmsApi.getFilmsList().execute().isSuccessful()) {
-//                return new ReadingEvent(filmsApi.getFilmsList().execute().body().getFilms(), true);
-//            }
-//        } catch (IOException e) {
-//            if (FilmSerializer.loadFilms() != null) {
-//                return new ReadingEvent(FilmSerializer.loadFilms(), false);
-//            } return null;
-//        } return null;
         filmsApi.getFilmsList().enqueue(new Callback<FilmsLab>() {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {

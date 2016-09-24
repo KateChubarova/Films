@@ -40,7 +40,7 @@ import butterknife.OnClick;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public class MainFragment extends BaseFragment{
+public class FilmsListFragment extends BaseFragment{
     @BindView(R.id.rv) protected RecyclerView rv;
     private RVAdapter rvAdapter;
     private List<Film> films;
@@ -54,9 +54,7 @@ public class MainFragment extends BaseFragment{
         View v = inflater.inflate(R.layout.films_fragment, parent, false);
         ButterKnife.bind(this, v);
         setUpComponent(FilmsApplication.getAppComponent(this));
-
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         filmService.getFilms();
 
         return v;
@@ -130,9 +128,7 @@ public class MainFragment extends BaseFragment{
             rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
                     if (dy <= 0) return;
-
                     super.onScrolled(recyclerView, dx, dy);
 
                     totalItemCount = linearLayoutManager.getItemCount();

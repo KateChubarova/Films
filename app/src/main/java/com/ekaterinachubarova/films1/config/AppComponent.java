@@ -1,6 +1,6 @@
 package com.ekaterinachubarova.films1.config;
 
-import com.ekaterinachubarova.films1.ui.fragment.MainFragment;
+import com.ekaterinachubarova.films1.ui.fragment.FilmsListFragment;
 
 import javax.inject.Singleton;
 
@@ -14,7 +14,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface AppComponent {
 
-    void inject(MainFragment mainActivity);
+    void inject(FilmsListFragment mainActivity);
 
 }
 

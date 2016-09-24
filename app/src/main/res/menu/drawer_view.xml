@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/list_of_films"
+            android:icon="@mipmap/videocamera"
+            android:title="List of films" />
+        <item
+            android:id="@+id/empty_fragment"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Empty fragment" />
+    </group>
+</menu>

@@ -29,21 +29,19 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="15dp"
-        android:paddingLeft="10dp"
+        android:paddingBottom="@dimen/fifteen"
+        android:paddingLeft="@dimen/ten"
         android:paddingRight="10dp"
-        android:paddingTop="15dp">
+        android:paddingTop="@dimen/fifteen">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            tools:text="David Gilmour"
             android:textStyle="bold"
             android:paddingLeft="32dp" />
 
@@ -52,7 +50,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/name"
             android:orientation="horizontal"
-            android:paddingTop="16dp">
+            android:paddingTop="@dimen/activity_vertical_margin">
 
             <TextView
                 android:id="@+id/year"

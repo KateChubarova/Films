@@ -28,6 +28,9 @@
         <activity android:name=".ui.activity.FilmActivity"
             android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".ui.activity.FilmsListActivity"></activity>
+
+
         <meta-data
             android:name="DATABASE"
             android:value="films1.db" />
