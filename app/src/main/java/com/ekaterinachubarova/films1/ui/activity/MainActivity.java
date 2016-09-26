@@ -3,6 +3,7 @@ package com.ekaterinachubarova.films1.ui.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -103,6 +104,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+    }
+
+    @Override
+    public void onBackPressed () {
+        if(mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 
