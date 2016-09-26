@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v4.view.ViewPager
+        <com.ekaterinachubarova.films1.ui.adapter.NonSwipeableViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </android.support.v4.view.ViewPager>
+        </com.ekaterinachubarova.films1.ui.adapter.NonSwipeableViewPager>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

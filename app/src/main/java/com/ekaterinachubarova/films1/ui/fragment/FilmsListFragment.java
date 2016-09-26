@@ -94,12 +94,11 @@ public class FilmsListFragment extends BaseFragment{
             public void onLoadMore() {
                 films.add(null);
                 rvAdapter.notifyItemInserted(films.size() - 1);
-
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         films.remove(films.size() - 1);
-                        rvAdapter.notifyItemRemoved(films.size());
+                        //rvAdapter.notifyItemRemoved(films.size());
                         filmService.getFilms();
                     }
                 }, 5000);
@@ -128,7 +127,9 @@ public class FilmsListFragment extends BaseFragment{
             rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (dy <= 0) return;
+                    if (dy <= 0) {
+                        return;
+                    }
                     super.onScrolled(recyclerView, dx, dy);
 
                     totalItemCount = linearLayoutManager.getItemCount();
@@ -167,7 +168,7 @@ public class FilmsListFragment extends BaseFragment{
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof PersonViewHolder) {
+            if (rvAdapter.getItemViewType(position) == VIEW_TYPE_ITEM){
                 PersonViewHolder personViewHolder = (PersonViewHolder) holder;
                 personViewHolder.enName.setText(films.get(position).getNameEng());
                 personViewHolder.year.setText(films.get(position).getPremiere());
@@ -178,7 +179,7 @@ public class FilmsListFragment extends BaseFragment{
                 personViewHolder.progressBar.setVisibility(View.INVISIBLE);
                 personViewHolder.linearLayout.setTag(position);
 
-            } else if (holder instanceof LoadingViewHolder) {
+            } else if (rvAdapter.getItemViewType(position) == VIEW_TYPE_LOADING) {
                 LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
                 loadingViewHolder.progressBar.setIndeterminate(true);
             }
