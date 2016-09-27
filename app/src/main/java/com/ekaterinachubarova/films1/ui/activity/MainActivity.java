@@ -12,9 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.adapter.NavBarPagerAdapter;
+import com.facebook.Profile;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -41,15 +43,18 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
         setupDrawerContent(nvDrawer);
-        setPhoto () ;
+        setPhotoAndName (); ;
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
     }
 
-    private void setPhoto () {
+    private void setPhotoAndName () {
+        Profile profile = Profile.getCurrentProfile();
         View hView =  nvDrawer.getHeaderView(0);
         ImageView imageView = (ImageView) hView.findViewById(R.id.photo);
-        Picasso.with(this).load(R.drawable.pic1).
+        Picasso.with(this).load(profile.getProfilePictureUri(200, 200)).
                 transform(new CropCircleTransformation()).into(imageView);
+        TextView textView = (TextView)hView.findViewById(R.id.name);
+        textView.setText(profile.getName());
     }
 
     @Override
@@ -108,10 +113,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+        /**TODO: make onBackPressed
+         *
+         */
         if(mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawers();
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 }

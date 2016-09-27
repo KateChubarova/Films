@@ -30,6 +30,7 @@ public class FilmFragment extends Fragment {
 
     private Film film;
     public static final String FILM_PARS = "FILM";
+    public final static String TAG = "FilmFragment";
 
     @BindView(R.id.big_cover) ImageView filmImage;
     @BindView(R.id.premire) TextView date;

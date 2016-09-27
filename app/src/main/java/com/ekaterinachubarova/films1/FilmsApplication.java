@@ -6,6 +6,8 @@ import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.config.ApplicationModule;
 import com.ekaterinachubarova.films1.config.DaggerAppComponent;
 import com.ekaterinachubarova.films1.rest.model.Film;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
 
@@ -28,6 +30,9 @@ public class FilmsApplication extends SugarApp{
                 .applicationModule(new ApplicationModule(this))
                 .build();
         SugarContext.init(this);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.ekaterinachubarova.films1.ui.fragment.FilmsListFragment;
  * Created by ekaterinachubarova on 08.09.16.
  */
 public class FilmsListActivity extends SingleBaseFragmentActivity {
+
     @Override
     protected Fragment createFragment() {
         return new FilmsListFragment();

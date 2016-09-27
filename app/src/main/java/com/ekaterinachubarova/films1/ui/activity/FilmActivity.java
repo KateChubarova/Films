@@ -9,9 +9,12 @@ import com.ekaterinachubarova.films1.ui.fragment.FilmFragment;
 
 public class FilmActivity extends SingleBaseFragmentActivity {
 
+
     @Override
     protected Fragment createFragment() {
         Film film = getIntent().getParcelableExtra(FilmFragment.FILM_PARS);
         return FilmFragment.newInstance(film);
     }
+
+
 }

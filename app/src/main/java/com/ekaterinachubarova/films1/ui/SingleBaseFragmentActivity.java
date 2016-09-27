@@ -12,6 +12,7 @@ import com.ekaterinachubarova.films1.R;
  */
 public abstract class SingleBaseFragmentActivity extends AppCompatActivity {
 
+
     protected abstract Fragment createFragment();
 
     @Override

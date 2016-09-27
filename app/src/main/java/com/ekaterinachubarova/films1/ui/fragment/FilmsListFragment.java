@@ -45,6 +45,7 @@ public class FilmsListFragment extends BaseFragment{
     private RVAdapter rvAdapter;
     private List<Film> films;
     private boolean isFirstLoading = true;
+    public static final String TAG = "FilmsListFragment";
 
     @Inject
     protected RetrofitService filmService;
@@ -98,7 +99,6 @@ public class FilmsListFragment extends BaseFragment{
                     @Override
                     public void run() {
                         films.remove(films.size() - 1);
-                        //rvAdapter.notifyItemRemoved(films.size());
                         filmService.getFilms();
                     }
                 }, 5000);
