@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.ekaterinachubarova.films1.R;
 
@@ -26,6 +27,16 @@ public abstract class SingleBaseFragmentActivity extends AppCompatActivity {
             fragment = createFragment();
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -7,7 +7,11 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,9 +50,53 @@ public class FilmsListFragment extends BaseFragment{
     private List<Film> films;
     private boolean isFirstLoading = true;
     public static final String TAG = "FilmsListFragment";
+    private ActionMode mActionMode;
 
     @Inject
     protected RetrofitService filmService;
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
+    {
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+        {
+            // TODO Auto-generated method stub
+            switch(item.getItemId())
+            {
+                case R.id.action_search:
+                    return true;
+            }
+            return false;
+        }
+
+        //// Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu)
+        {
+            // TODO Auto-generated method stub
+            mode.getMenuInflater().inflate(R.menu.search_view, menu);
+            return true;
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode)
+        {
+            // TODO Auto-generated method stub
+            mActionMode = null;
+        }
+
+        //// Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+        {
+            // TODO Auto-generated method stub
+            return false;
+        }
+    };
 
     @Override
     public View onCreateView (final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -109,7 +157,6 @@ public class FilmsListFragment extends BaseFragment{
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
-
 
     public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private final int VIEW_TYPE_ITEM = 0;
@@ -226,4 +273,12 @@ public class FilmsListFragment extends BaseFragment{
             isLoading = false;
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+
 }

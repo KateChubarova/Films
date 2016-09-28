@@ -17,6 +17,7 @@ import com.facebook.Profile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 27.09.16.
@@ -24,6 +25,11 @@ import butterknife.ButterKnife;
 
 public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.froggy_image) ImageView frog;
+
+    @OnClick(R.id.froggy_image)
+    public void onFrogClick () {
+        openNextActivity();
+    }
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -39,7 +45,6 @@ public class SplashActivity extends AppCompatActivity {
 
         ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
         //rotate.setRepeatCount(5);
-
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
         scaleDown.play(rotate).after(scaleDownX);
@@ -49,21 +54,13 @@ public class SplashActivity extends AppCompatActivity {
         scaleDown.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
+                frog.setClickable(false);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
-                Profile profile = Profile.getCurrentProfile();
-
-                if (enableButtons && profile != null) {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    DialogFragment dialogFragment = new FacebookLoginFragment();
-                    dialogFragment.show(getSupportFragmentManager(), "login");
-                }
+                frog.setClickable(true);
+                openNextActivity();
             }
 
             @Override
@@ -76,5 +73,19 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void openNextActivity () {
+        boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
+        Profile profile = Profile.getCurrentProfile();
+
+        if (enableButtons && profile != null) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        } else {
+            DialogFragment dialogFragment = new FacebookLoginFragment();
+            dialogFragment.show(getSupportFragmentManager(), "login");
+        }
     }
 }

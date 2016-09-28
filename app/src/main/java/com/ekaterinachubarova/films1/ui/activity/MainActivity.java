@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -118,17 +117,16 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
 
-    @Override
-    public void onBackPressed () {
-        /**TODO: make onBackPressed
-         *
-         */
-        if(mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawers();
-        } else {
-            super.onBackPressed();
-            finish();
-        }
-    }
+//    @Override
+//    public void onBackPressed () {
+//        /**TODO: make onBackPressed
+//         *
+//         */
+//        if(mDrawer.isDrawerOpen(GravityCompat.START)) {
+//            mDrawer.closeDrawers();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 }
 

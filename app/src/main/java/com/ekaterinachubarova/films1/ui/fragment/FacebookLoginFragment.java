@@ -1,5 +1,7 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -101,7 +103,6 @@ public class FacebookLoginFragment extends DialogFragment {
                         if (exception instanceof FacebookAuthorizationException) {
                             showAlert();
                         }
-                        //updateUI();
                     }
 
                     private void showAlert() {
@@ -185,8 +186,13 @@ public class FacebookLoginFragment extends DialogFragment {
                 .getWindow()
                 .getDecorView();
 
-        //decorView.animate().scaleXBy(f).scaleYBy(10f).setDuration(3000).start();
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(decorView, View.SCALE_X, 0.5f, 1f).setDuration(1500);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(decorView, View.SCALE_Y, 0.5f, 1f).setDuration(1500);
 
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(decorView, View.ALPHA, 0.7f , 1).setDuration(1500);
+        AnimatorSet scaleDown = new AnimatorSet();
+        scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
+        scaleDown.start();
     }
 
 }

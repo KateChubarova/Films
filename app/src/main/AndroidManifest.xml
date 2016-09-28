@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:name=".FilmsApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MainActivity"></activity>
+        <activity android:name=".ui.activity.MainActivity"
+            android:parentActivityName=".ui.activity.SplashActivity"></activity>
         <activity android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
 
@@ -27,9 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.FilmActivity"
-            android:screenOrientation="portrait"></activity>
-
-        <activity android:name=".ui.activity.FilmsListActivity"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activity.MainActivity"></activity>
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
