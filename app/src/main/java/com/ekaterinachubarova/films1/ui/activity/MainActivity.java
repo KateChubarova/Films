@@ -1,5 +1,6 @@
 package com.ekaterinachubarova.films1.ui.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.adapter.NavBarPagerAdapter;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -85,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.empty_fragment:
                 pager.setCurrentItem(NavBarPagerAdapter.EMPTY_FRAGMENT, false);
+                break;
+            case R.id.log_out:
+                LoginManager.getInstance().logOut();
+                Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                startActivity(intent);
                 break;
             default:
                 pager.setCurrentItem(NavBarPagerAdapter.LIST_OF_FILMS);

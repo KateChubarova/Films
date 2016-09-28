@@ -1,5 +1,6 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.activity.MainActivity;
@@ -27,7 +29,6 @@ import com.facebook.share.widget.ShareDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 28.09.16.
@@ -83,7 +84,6 @@ public class FacebookLoginFragment extends DialogFragment {
 
         callbackManager = CallbackManager.Factory.create();
 
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -126,9 +126,11 @@ public class FacebookLoginFragment extends DialogFragment {
         };
     }
 
-    @OnClick(R.id.login_button)
-    public void onLoginClick () {
-
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Override
@@ -140,6 +142,7 @@ public class FacebookLoginFragment extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -156,8 +159,7 @@ public class FacebookLoginFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        updateUI();
-        View v = inflater.inflate(R.layout.facebook_login_activity, container, false);
+        View v = inflater.inflate(R.layout.facebook_login_dialog, container, false);
 
         ButterKnife.bind(this, v);
         loginButton.setFragment(this);
@@ -172,7 +174,6 @@ public class FacebookLoginFragment extends DialogFragment {
         if (enableButtons && profile != null) {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
-        } else {
         }
     }
 
@@ -184,7 +185,7 @@ public class FacebookLoginFragment extends DialogFragment {
                 .getWindow()
                 .getDecorView();
 
-        decorView.animate().alphaBy(0.1f).setDuration(1000).start();
+        //decorView.animate().scaleXBy(f).scaleYBy(10f).setDuration(3000).start();
 
     }
 

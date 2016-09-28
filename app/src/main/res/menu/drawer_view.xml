@@ -10,4 +10,10 @@
             android:icon="@mipmap/ic_launcher"
             android:title="Empty fragment" />
     </group>
+
+    <item
+        android:id="@+id/log_out"
+        android:title="Log out"
+        android:icon="@drawable/com_facebook_close">
+    </item>
 </menu>

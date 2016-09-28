@@ -3,6 +3,7 @@ package com.ekaterinachubarova.films1.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.fragment.FacebookLoginFragment;
+import com.facebook.AccessToken;
+import com.facebook.Profile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0 , 1).setDuration(5000);
 
         ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
-        rotate.setRepeatCount(5);
+        //rotate.setRepeatCount(5);
 
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
@@ -51,8 +54,16 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                DialogFragment dialogFragment = new FacebookLoginFragment();
-                dialogFragment.show(getSupportFragmentManager(), "login");
+                boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
+                Profile profile = Profile.getCurrentProfile();
+
+                if (enableButtons && profile != null) {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    DialogFragment dialogFragment = new FacebookLoginFragment();
+                    dialogFragment.show(getSupportFragmentManager(), "login");
+                }
             }
 
             @Override
