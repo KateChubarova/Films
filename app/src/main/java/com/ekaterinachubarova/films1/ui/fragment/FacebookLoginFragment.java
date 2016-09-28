@@ -1,13 +1,16 @@
-package com.ekaterinachubarova.films1.ui.activity;
+package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.ekaterinachubarova.films1.R;
+import com.ekaterinachubarova.films1.ui.activity.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
@@ -18,19 +21,26 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.facebook.share.Sharer;
 import com.facebook.share.widget.ShareDialog;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 28.09.16.
  */
 
-public class FacebookLoginActivity extends FragmentActivity {
+public class FacebookLoginFragment extends DialogFragment {
+    @BindView(R.id.login_button)
+    LoginButton loginButton;
 
-    private TextView greeting;
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
     private ShareDialog shareDialog;
+
     private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
         @Override
         public void onCancel() {
@@ -57,20 +67,22 @@ public class FacebookLoginActivity extends FragmentActivity {
         }
 
         private void showResult(String title, String alertMessage) {
-            new AlertDialog.Builder(FacebookLoginActivity.this)
+            new AlertDialog.Builder(getActivity())
                     .setTitle(title)
                     .setMessage(alertMessage)
                     .setPositiveButton(R.string.ok, null)
                     .show();
         }
     };
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+
+        FacebookSdk.sdkInitialize(this.getActivity().getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
+
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -81,7 +93,6 @@ public class FacebookLoginActivity extends FragmentActivity {
 
                     @Override
                     public void onCancel() {
-
                         updateUI();
                     }
 
@@ -90,11 +101,11 @@ public class FacebookLoginActivity extends FragmentActivity {
                         if (exception instanceof FacebookAuthorizationException) {
                             showAlert();
                         }
-                        updateUI();
+                        //updateUI();
                     }
 
                     private void showAlert() {
-                        new AlertDialog.Builder(FacebookLoginActivity.this)
+                        new AlertDialog.Builder(getActivity())
                                 .setTitle(R.string.cancelled)
                                 .setMessage(R.string.permission_not_granted)
                                 .setPositiveButton(R.string.ok, null)
@@ -107,52 +118,74 @@ public class FacebookLoginActivity extends FragmentActivity {
                 callbackManager,
                 shareCallback);
 
-
-        setContentView(R.layout.facebook_login_activity);
-
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 updateUI();
             }
         };
+    }
 
-        greeting = (TextView) findViewById(R.id.text);
+    @OnClick(R.id.login_button)
+    public void onLoginClick () {
+
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         updateUI();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         profileTracker.stopTracking();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        updateUI();
+        View v = inflater.inflate(R.layout.facebook_login_activity, container, false);
+
+        ButterKnife.bind(this, v);
+        loginButton.setFragment(this);
+
+        return v;
+    }
+
     private void updateUI() {
         boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
-
         Profile profile = Profile.getCurrentProfile();
+
         if (enableButtons && profile != null) {
-            greeting.setText(getString(R.string.hello_user, profile.getFirstName()));
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         } else {
-            greeting.setText(getResources().getString(R.string.multilines));
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        final View decorView = getDialog()
+                .getWindow()
+                .getDecorView();
+
+        decorView.animate().alphaBy(0.1f).setDuration(1000).start();
+
+    }
 
 }
