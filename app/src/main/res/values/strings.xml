@@ -14,7 +14,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="facebook_app_id">327967924203294</string>
-    <string name="multilines">If you want to see \n the most popular filmsfor nowdays \n you should be login.</string>
+    <string name="multilines">If you want to see \n the most popular films for nowdays \n you should be login.</string>
 
     <string name="cancelled">Cancelled</string>
     <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>

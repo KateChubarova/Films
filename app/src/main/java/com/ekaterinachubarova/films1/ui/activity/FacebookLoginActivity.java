@@ -1,20 +1,16 @@
-package com.ekaterinachubarova.films1.ui.fragment;
+package com.ekaterinachubarova.films1.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.ekaterinachubarova.films1.R;
-import com.ekaterinachubarova.films1.ui.activity.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -25,43 +21,16 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.Sharer;
 import com.facebook.share.widget.ShareDialog;
 
-import java.util.Arrays;
-
 /**
- * Created by ekaterinachubarova on 27.09.16.
+ * Created by ekaterinachubarova on 28.09.16.
  */
 
-public class FacebookLoginDialogFragment extends DialogFragment {
+public class FacebookLoginActivity extends FragmentActivity {
+
+    private TextView greeting;
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
     private ShareDialog shareDialog;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.facebook_login_fragment, container, false);
-
-        Button loginViaFB = (Button)v.findViewById(R.id.login_via_facebook);
-        Button cancel = (Button)v.findViewById(R.id.cancel);
-
-        loginViaFB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-                dismiss();
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        return v;
-    }
-
     private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
         @Override
         public void onCancel() {
@@ -88,24 +57,20 @@ public class FacebookLoginDialogFragment extends DialogFragment {
         }
 
         private void showResult(String title, String alertMessage) {
-            new AlertDialog.Builder(getActivity())
+            new AlertDialog.Builder(FacebookLoginActivity.this)
                     .setTitle(title)
                     .setMessage(alertMessage)
                     .setPositiveButton(R.string.ok, null)
                     .show();
         }
     };
-
-    public void login () {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-    }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
-        callbackManager = com.facebook.CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -116,18 +81,20 @@ public class FacebookLoginDialogFragment extends DialogFragment {
 
                     @Override
                     public void onCancel() {
-                        showAlert();
+
                         updateUI();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        showAlert();
+                        if (exception instanceof FacebookAuthorizationException) {
+                            showAlert();
+                        }
                         updateUI();
                     }
 
                     private void showAlert() {
-                        new AlertDialog.Builder(getActivity())
+                        new AlertDialog.Builder(FacebookLoginActivity.this)
                                 .setTitle(R.string.cancelled)
                                 .setMessage(R.string.permission_not_granted)
                                 .setPositiveButton(R.string.ok, null)
@@ -141,7 +108,7 @@ public class FacebookLoginDialogFragment extends DialogFragment {
                 shareCallback);
 
 
-
+        setContentView(R.layout.facebook_login_activity);
 
         profileTracker = new ProfileTracker() {
             @Override
@@ -149,45 +116,43 @@ public class FacebookLoginDialogFragment extends DialogFragment {
                 updateUI();
             }
         };
-        //DialogFragment dialogFragment = new FacebookLoginDialogFragment();
-        //dialogFragment.show(getFragmentManager(), "dialog");
+
+        greeting = (TextView) findViewById(R.id.text);
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        //updateUI();
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        callbackManager.onActivityResult(requestCode, resultCode, data);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
     @Override
-    public void onDestroy () {
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
         profileTracker.stopTracking();
     }
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        profileTracker.stopTracking();
-//    }
 
-    public void updateUI() {
+    private void updateUI() {
         boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
+
         Profile profile = Profile.getCurrentProfile();
         if (enableButtons && profile != null) {
-            Toast.makeText(getActivity(), "You was login with Facebook.", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
+            greeting.setText(getString(R.string.hello_user, profile.getFirstName()));
         } else {
-            Toast.makeText(getActivity(), "Please, login with Facebook", Toast.LENGTH_LONG).show();
-
+            greeting.setText(getResources().getString(R.string.multilines));
         }
     }
 
-}
 
+}
