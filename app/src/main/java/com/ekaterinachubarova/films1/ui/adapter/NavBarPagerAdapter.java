@@ -25,12 +25,14 @@ public class NavBarPagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public Fragment getItem(int position) {
-        if (position == LIST_OF_FILMS) {
-            return new FilmsListFragment();
-        } else if (position == EMPTY_FRAGMENT) {
-            return new EmptyFragment();
+        switch (position) {
+            case LIST_OF_FILMS :
+                return new FilmsListFragment();
+            case EMPTY_FRAGMENT:
+                return new EmptyFragment();
+            default:
+                return new FilmsListFragment();
         }
-        return new FilmsListFragment();
     }
 }
 

@@ -115,7 +115,7 @@ public class FilmsListFragment extends BaseFragment{
             isFirstLoading = false;
             setAdapter(event);
 
-        } else if (!isFirstLoading) {
+        } else  {
             setChanges (event.getFilms());
         }
     }
@@ -203,32 +203,38 @@ public class FilmsListFragment extends BaseFragment{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            if (viewType == VIEW_TYPE_ITEM) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item1, parent, false);
-                return new PersonViewHolder(v);
-            }  else if (viewType == VIEW_TYPE_LOADING) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_item, parent, false);
-                return new LoadingViewHolder(view);
+            switch (viewType) {
+                case VIEW_TYPE_ITEM:
+                    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item1, parent, false);
+                    return new PersonViewHolder(v);
+                case VIEW_TYPE_LOADING:
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_item, parent, false);
+                    return new LoadingViewHolder(view);
+                default:
+                    return null;
+
             }
-            return null;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (rvAdapter.getItemViewType(position) == VIEW_TYPE_ITEM){
-                PersonViewHolder personViewHolder = (PersonViewHolder) holder;
-                personViewHolder.enName.setText(films.get(position).getNameEng());
-                personViewHolder.year.setText(films.get(position).getPremiere());
-                Picasso.with(getActivity())
-                        .load(films.get(position).getImage())
-                        .error(R.mipmap.ic_launcher)
-                        .into(personViewHolder.filmImage);
-                personViewHolder.progressBar.setVisibility(View.INVISIBLE);
-                personViewHolder.linearLayout.setTag(position);
+            switch (rvAdapter.getItemViewType(position)){
+                case VIEW_TYPE_ITEM:
+                    PersonViewHolder personViewHolder = (PersonViewHolder) holder;
+                    personViewHolder.enName.setText(films.get(position).getNameEng());
+                    personViewHolder.year.setText(films.get(position).getPremiere());
+                    Picasso.with(getActivity())
+                            .load(films.get(position).getImage())
+                            .error(R.mipmap.ic_launcher)
+                            .into(personViewHolder.filmImage);
+                    personViewHolder.progressBar.setVisibility(View.INVISIBLE);
+                    personViewHolder.linearLayout.setTag(position);
+                    break;
+                case VIEW_TYPE_LOADING:
+                    LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+                    loadingViewHolder.progressBar.setIndeterminate(true);
+                    break;
 
-            } else if (rvAdapter.getItemViewType(position) == VIEW_TYPE_LOADING) {
-                LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
-                loadingViewHolder.progressBar.setIndeterminate(true);
             }
         }
 

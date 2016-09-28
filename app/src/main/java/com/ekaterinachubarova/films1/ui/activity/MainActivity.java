@@ -117,16 +117,5 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
 
-//    @Override
-//    public void onBackPressed () {
-//        /**TODO: make onBackPressed
-//         *
-//         */
-//        if(mDrawer.isDrawerOpen(GravityCompat.START)) {
-//            mDrawer.closeDrawers();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
 }
 
