@@ -3,6 +3,7 @@ package com.ekaterinachubarova.films1.rest.api;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.rest.model.FilmsLab;
 import com.ekaterinachubarova.films1.serializer.FilmSerializer;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +28,7 @@ public class RetrofitService {
         filmsApi = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                        //.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                         .excludeFieldsWithoutExposeAnnotation()
                         .create()))
                 .build()
@@ -39,9 +40,9 @@ public class RetrofitService {
 
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
-                EventBus.getDefault().post(new ReadingEvent(ReadingEvent.INFORMATION_FROM_NETWORK, response.body().getFilms()));
+                EventBus.getDefault().post(new ReadingEvent(ReadingEvent.INFORMATION_FROM_NETWORK, response.body().getList()));
                 FilmSerializer.deleteAllFilms();
-                //FilmSerializer.saveFilms(response.body().getFilms());
+                FilmSerializer.saveFilms(response.body().getList());
             }
 
             @Override

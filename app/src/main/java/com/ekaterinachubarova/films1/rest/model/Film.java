@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
@@ -29,20 +28,21 @@ public class Film extends SugarRecord implements Parcelable {
             return new Film[size];
         }
     };
-    @SerializedName("description")
+
+    private Long id;
+
     @Expose
     String description;
-    private Long id;
+
     @Expose
-    @SerializedName("name")
     private String name;
-    //@SerializedName("image")
+
     @Expose
     private String image;
-    @SerializedName("name_eng")
+
     @Expose
     private String nameEng;
-    @SerializedName("premiere")
+
     @Expose
     private String premiere;
 

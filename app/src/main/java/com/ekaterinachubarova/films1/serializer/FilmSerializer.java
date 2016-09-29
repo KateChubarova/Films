@@ -43,7 +43,7 @@ public class FilmSerializer {
     @Subscribe
     public static void eventSave(FilmsLab filmsLab) {
         System.out.println("Films saved");
-        saveFilms(filmsLab.getFilms());
+        saveFilms(filmsLab.getList());
     }
 
 }

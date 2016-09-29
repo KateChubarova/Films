@@ -1,7 +1,6 @@
 package com.ekaterinachubarova.films1.rest.model;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FilmsLab extends SugarRecord {
-    @SerializedName("list")
+
     @Expose
-    private List<Film> films = new ArrayList<Film>();
+    private List<Film> list = new ArrayList<Film>();
 
     public FilmsLab(List<Film> films) {
-        this.films = films;
+        this.list = films;
     }
 }
