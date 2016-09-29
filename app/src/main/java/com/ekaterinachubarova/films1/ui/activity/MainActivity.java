@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.adapter.NavBarPagerAdapter;
+import com.ekaterinachubarova.films1.ui.adapter.SwipeEnableViewPager;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.nvView)
     protected NavigationView nvDrawer;
     @BindView(R.id.pager)
-    protected ViewPager pager;
+    protected SwipeEnableViewPager pager;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
         setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
+        pager.setSwipeEnabled(false);
     }
 
     private void setPhotoAndName() {
@@ -110,10 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override

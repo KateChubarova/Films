@@ -20,7 +20,6 @@ import com.ekaterinachubarova.films1.FilmsApplication;
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
-import com.ekaterinachubarova.films1.listener.OnLoadListener;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
@@ -51,16 +50,37 @@ public class FilmsListFragment extends BaseFragment {
     private List<Film> films;
     private boolean isFirstLoading = true;
 
+    private LinearLayoutManager linearLayoutManager;
+    private boolean isLoading;
+    private int visibleThreshold = 1;
+    private int lastVisibleItem, totalItemCount;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.films_fragment, parent, false);
         ButterKnife.bind(this, v);
         setUpComponent(FilmsApplication.getAppComponent(getActivity()));
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(linearLayoutManager);
+
+
         filmService.getFilms();
 
         return v;
+    }
+
+    private void onLoadMore() {
+        films.add(null);
+        rvAdapter.notifyItemInserted(films.size() - 1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                films.remove(films.size() - 1);
+                filmService.getFilms();
+            }
+        }, 3000);
     }
 
     @Subscribe
@@ -84,26 +104,28 @@ public class FilmsListFragment extends BaseFragment {
     public void setAdapter(ReadingEvent event) {
         if (event.isFlag() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
             Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
-        }
-        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
+        } else {
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
         }
         films = event.getFilms();
         rvAdapter = new RVAdapter();
         rv.setAdapter(rvAdapter);
 
-        rvAdapter.setOnLoadMoreListener(new OnLoadListener() {
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onLoadMore() {
-                films.add(null);
-                rvAdapter.notifyItemInserted(films.size() - 1);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        films.remove(films.size() - 1);
-                        filmService.getFilms();
-                    }
-                }, 5000);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy <= 0) {
+                    return;
+                }
+                super.onScrolled(recyclerView, dx, dy);
+
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    onLoadMore();
+                    isLoading = true;
+                }
             }
         });
     }
@@ -115,40 +137,6 @@ public class FilmsListFragment extends BaseFragment {
     public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final int VIEW_TYPE_ITEM = 0;
         private final int VIEW_TYPE_LOADING = 1;
-
-        private OnLoadListener mOnLoadMoreListener;
-
-        private boolean isLoading;
-        private int visibleThreshold = 1;
-        private int lastVisibleItem, totalItemCount;
-
-        public RVAdapter() {
-
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
-            rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (dy <= 0) {
-                        return;
-                    }
-                    super.onScrolled(recyclerView, dx, dy);
-
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-
-                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        if (mOnLoadMoreListener != null) {
-                            mOnLoadMoreListener.onLoadMore();
-                        }
-                        isLoading = true;
-                    }
-                }
-            });
-        }
-
-        public void setOnLoadMoreListener(OnLoadListener mOnLoadMoreListener) {
-            this.mOnLoadMoreListener = mOnLoadMoreListener;
-        }
 
         @Override
         public int getItemViewType(int position) {

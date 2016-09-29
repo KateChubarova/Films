@@ -62,8 +62,8 @@ public class FilmFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        //ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         toolbarTextAppernce();
         collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getName());
         date.setTypeface(face);

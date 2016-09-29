@@ -17,7 +17,7 @@ import lombok.Setter;
 public class FilmsLab extends SugarRecord {
 
     @Expose
-    private List<Film> list = new ArrayList<Film>();
+    private List<Film> list = new ArrayList<>();
 
     public FilmsLab(List<Film> films) {
         this.list = films;

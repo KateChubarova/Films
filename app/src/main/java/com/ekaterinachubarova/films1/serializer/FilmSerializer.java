@@ -22,8 +22,7 @@ public class FilmSerializer {
     }
 
     public static List<Film> loadFilms() {
-        List<Film> films = Film.listAll(Film.class);
-        return films;
+        return Film.listAll(Film.class);
     }
 
 
@@ -32,7 +31,6 @@ public class FilmSerializer {
     }
 
     public static Film getFilm(Long id) {
-        System.out.println(id);
         return Film.findById(Film.class, id);
     }
 
@@ -42,7 +40,6 @@ public class FilmSerializer {
 
     @Subscribe
     public static void eventSave(FilmsLab filmsLab) {
-        System.out.println("Films saved");
         saveFilms(filmsLab.getList());
     }
 

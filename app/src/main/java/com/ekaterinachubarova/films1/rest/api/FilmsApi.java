@@ -12,6 +12,8 @@ public interface FilmsApi {
 
     String BASE_URL = "http://www.mocky.io/v2/";
 
+    int TIMEOUT = 30;
+
     @GET("57cffac8260000181e650041")
     Call<FilmsLab> getFilmsList();
 }

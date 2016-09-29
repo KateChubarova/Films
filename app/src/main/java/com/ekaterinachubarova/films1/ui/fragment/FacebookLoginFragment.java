@@ -37,6 +37,9 @@ import butterknife.ButterKnife;
  */
 
 public class FacebookLoginFragment extends DialogFragment {
+    
+    private static final String TAG = FacebookLoginFragment.class.getSimpleName();
+    
     @BindView(R.id.login_button)
     LoginButton loginButton;
 
@@ -47,12 +50,12 @@ public class FacebookLoginFragment extends DialogFragment {
     private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
         @Override
         public void onCancel() {
-            Log.d("HelloFacebook", "Canceled");
+            Log.d(TAG, "Canceled");
         }
 
         @Override
         public void onError(FacebookException error) {
-            Log.d("HelloFacebook", String.format("Error: %s", error.toString()));
+            Log.d(TAG, String.format("Error: %s", error.toString()));
             String title = getString(R.string.error);
             String alertMessage = error.getMessage();
             showResult(title, alertMessage);
@@ -60,7 +63,7 @@ public class FacebookLoginFragment extends DialogFragment {
 
         @Override
         public void onSuccess(Sharer.Result result) {
-            Log.d("HelloFacebook", "Success!");
+            Log.d(TAG, "Success!");
             if (result.getPostId() != null) {
                 String title = getString(R.string.success);
                 String id = result.getPostId();

@@ -17,7 +17,6 @@ import com.facebook.Profile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 27.09.16.
@@ -26,11 +25,6 @@ import butterknife.OnClick;
 public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.froggy_image)
     ImageView frog;
-
-    @OnClick(R.id.froggy_image)
-    public void onFrogClick() {
-        openNextActivity();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,11 +35,9 @@ public class SplashActivity extends AppCompatActivity {
 
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(frog, View.SCALE_X, 3f, 2f).setDuration(5000);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(frog, View.SCALE_Y, 3f, 2f).setDuration(5000);
-
         ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0, 1).setDuration(5000);
-
         ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
-        rotate.setRepeatCount(5);
+
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
         scaleDown.play(rotate).after(scaleDownX);
@@ -55,12 +47,11 @@ public class SplashActivity extends AppCompatActivity {
         scaleDown.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                frog.setClickable(false);
+
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                frog.setClickable(true);
                 openNextActivity();
             }
 
