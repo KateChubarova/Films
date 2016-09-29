@@ -1,6 +1,6 @@
 package com.ekaterinachubarova.films1;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
 
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.config.ApplicationModule;
@@ -15,11 +15,11 @@ import com.orm.SugarContext;
  * Created by ekaterinachubarova on 20.09.16.
  */
 
-public class FilmsApplication extends SugarApp{
+public class FilmsApplication extends SugarApp {
     private AppComponent appComponent;
 
-    public static AppComponent getAppComponent(Fragment context) {
-        return ((FilmsApplication) context.getActivity().getApplicationContext()).appComponent;
+    public static AppComponent getAppComponent(Context context) {
+        return ((FilmsApplication) context.getApplicationContext()).appComponent;
     }
 
     @Override

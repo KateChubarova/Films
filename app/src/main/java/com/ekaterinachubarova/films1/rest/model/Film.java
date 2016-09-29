@@ -17,40 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table
-public class Film extends SugarRecord implements Parcelable{
-    private Long id;
-
-    @Expose
-    @SerializedName("name")
-    private String nameRus;
-
-    @SerializedName("image")
-    @Expose
-    private String image;
-
-    @SerializedName("name_eng")
-    @Expose
-    private String nameEng;
-
-    @SerializedName("premiere")
-    @Expose
-    private String premiere;
-
-    @SerializedName("description")
-    @Expose
-    String description;
-
-    protected Film(Parcel in) {
-        id = in.readLong();
-        nameRus = in.readString();
-        image = in.readString();
-        nameEng = in.readString();
-        premiere = in.readString();
-        description = in.readString();
-    }
-
-    public Film(){}
-
+public class Film extends SugarRecord implements Parcelable {
     public static final Creator<Film> CREATOR = new Creator<Film>() {
         @Override
         public Film createFromParcel(Parcel in) {
@@ -62,6 +29,31 @@ public class Film extends SugarRecord implements Parcelable{
             return new Film[size];
         }
     };
+    @SerializedName("description")
+    @Expose
+    String description;
+    private Long id;
+    @Expose
+    @SerializedName("name")
+    private String name;
+    //@SerializedName("image")
+    @Expose
+    private String image;
+    @SerializedName("name_eng")
+    @Expose
+    private String nameEng;
+    @SerializedName("premiere")
+    @Expose
+    private String premiere;
+
+    protected Film(Parcel in) {
+        id = in.readLong();
+        name = in.readString();
+        image = in.readString();
+        nameEng = in.readString();
+        premiere = in.readString();
+        description = in.readString();
+    }
 
     @Override
     public int describeContents() {
@@ -71,7 +63,7 @@ public class Film extends SugarRecord implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(id);
-        parcel.writeString(nameRus);
+        parcel.writeString(name);
         parcel.writeString(image);
         parcel.writeString(nameEng);
         parcel.writeString(premiere);
@@ -79,12 +71,12 @@ public class Film extends SugarRecord implements Parcelable{
     }
 
     @Override
-    public Long getId () {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId (Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

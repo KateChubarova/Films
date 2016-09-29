@@ -40,23 +40,23 @@ import butterknife.OnClick;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public class FilmsListFragment extends BaseFragment{
-    @BindView(R.id.rv) protected RecyclerView rv;
-    private RVAdapter rvAdapter;
-    private List<Film> films;
-    private boolean isFirstLoading = true;
-    public static final String TAG = "FilmsListFragment";
+public class FilmsListFragment extends BaseFragment {
+    @BindView(R.id.rv)
+    protected RecyclerView rv;
 
     @Inject
     protected RetrofitService filmService;
 
-
+    private RVAdapter rvAdapter;
+    private List<Film> films;
+    private boolean isFirstLoading = true;
 
     @Override
-    public View onCreateView (final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    public View onCreateView(final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.films_fragment, parent, false);
         ButterKnife.bind(this, v);
-        setUpComponent(FilmsApplication.getAppComponent(this));
+        setUpComponent(FilmsApplication.getAppComponent(getActivity()));
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         filmService.getFilms();
 
@@ -64,25 +64,25 @@ public class FilmsListFragment extends BaseFragment{
     }
 
     @Subscribe
-    public void onEvent (ReadingEvent event) {
+    public void onEvent(ReadingEvent event) {
         if (isFirstLoading) {
             isFirstLoading = false;
             setAdapter(event);
 
-        } else  {
-            setChanges (event.getFilms());
+        } else {
+            setChanges(event.getFilms());
         }
     }
 
-    public void setChanges (List<Film> newFilms) {
+    public void setChanges(List<Film> newFilms) {
         films.addAll(newFilms);
         rvAdapter.notifyDataSetChanged();
         rvAdapter.setLoaded();
     }
 
 
-    public void setAdapter (ReadingEvent event) {
-        if (event.isFlag() == ReadingEvent.INFORMATION_FROM_DATABASE) {
+    public void setAdapter(ReadingEvent event) {
+        if (event.isFlag() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
             Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
         }
         if (event.isFlag() == ReadingEvent.INFORMATION_FROM_NETWORK) {
@@ -112,7 +112,7 @@ public class FilmsListFragment extends BaseFragment{
         appComponent.inject(this);
     }
 
-    public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final int VIEW_TYPE_ITEM = 0;
         private final int VIEW_TYPE_LOADING = 1;
 
@@ -122,7 +122,7 @@ public class FilmsListFragment extends BaseFragment{
         private int visibleThreshold = 1;
         private int lastVisibleItem, totalItemCount;
 
-        public RVAdapter(){
+        public RVAdapter() {
 
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
             rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -172,7 +172,7 @@ public class FilmsListFragment extends BaseFragment{
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            switch (rvAdapter.getItemViewType(position)){
+            switch (rvAdapter.getItemViewType(position)) {
                 case VIEW_TYPE_ITEM:
                     PersonViewHolder personViewHolder = (PersonViewHolder) holder;
                     personViewHolder.enName.setText(films.get(position).getNameEng());
@@ -192,6 +192,15 @@ public class FilmsListFragment extends BaseFragment{
             }
         }
 
+        @Override
+        public int getItemCount() {
+            return films == null ? 0 : films.size();
+        }
+
+        public void setLoaded() {
+            isLoading = false;
+        }
+
         public class LoadingViewHolder extends RecyclerView.ViewHolder {
             public ProgressBar progressBar;
 
@@ -203,16 +212,23 @@ public class FilmsListFragment extends BaseFragment{
             }
         }
 
-        public class PersonViewHolder extends RecyclerView.ViewHolder{
-            @BindView(R.id.list_item) protected LinearLayout linearLayout;
-            @BindView(R.id.name) protected TextView enName;
-            @BindView(R.id.small_cover) protected ImageView filmImage;
-            @BindView(R.id.year) TextView year;
-            @BindView(R.id.cover_progress) ProgressBar progressBar;
+        public class PersonViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.list_item)
+            protected LinearLayout linearLayout;
+            @BindView(R.id.name)
+            protected TextView enName;
+            @BindView(R.id.small_cover)
+            protected ImageView filmImage;
+            @BindView(R.id.year)
+            TextView year;
+            @BindView(R.id.cover_progress)
+            ProgressBar progressBar;
+
             PersonViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
+
             @OnClick(R.id.list_item)
             public void onClick() {
                 Intent intent = new Intent(getActivity(), FilmActivity.class);
@@ -224,17 +240,7 @@ public class FilmsListFragment extends BaseFragment{
                 startActivity(intent, options.toBundle());
             }
         }
-
-        @Override
-        public int getItemCount() {
-            return films == null ? 0 : films.size();
-        }
-        public void setLoaded() {
-            isLoading = false;
-        }
     }
-
-
 
 
 }

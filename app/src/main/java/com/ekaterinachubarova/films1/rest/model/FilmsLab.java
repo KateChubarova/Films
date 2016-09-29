@@ -15,12 +15,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class FilmsLab extends SugarRecord{
+public class FilmsLab extends SugarRecord {
     @SerializedName("list")
     @Expose
     private List<Film> films = new ArrayList<Film>();
 
-    public FilmsLab (List <Film> films) {
+    public FilmsLab(List<Film> films) {
         this.films = films;
     }
 }

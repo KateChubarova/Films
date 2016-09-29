@@ -27,17 +27,20 @@ import butterknife.ButterKnife;
  */
 public class FilmFragment extends Fragment {
 
-    private Film film;
     public static final String FILM_PARS = "FILM";
-    public final static String TAG = "FilmFragment";
+    @BindView(R.id.big_cover)
+    ImageView filmImage;
+    @BindView(R.id.premire)
+    TextView date;
+    @BindView(R.id.description)
+    TextView description;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    private Film film;
 
-    @BindView(R.id.big_cover) ImageView filmImage;
-    @BindView(R.id.premire) TextView date;
-    @BindView(R.id.description) TextView description;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
-
-    public static FilmFragment newInstance (Film film) {
+    public static FilmFragment newInstance(Film film) {
         Bundle args = new Bundle();
         args.putParcelable(FILM_PARS, film);
         FilmFragment filmFragment = new FilmFragment();
@@ -46,23 +49,23 @@ public class FilmFragment extends Fragment {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         film = getArguments().getParcelable(FILM_PARS);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.film_fragment, parent, false);
         final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
         ButterKnife.bind(this, v);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        //actionBar.setDisplayHomeAsUpEnabled(true);
         toolbarTextAppernce();
-        collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getNameRus());
+        collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getName());
         date.setTypeface(face);
         description.setTypeface(face);
         date.setText(film.getPremiere());
@@ -88,12 +91,10 @@ public class FilmFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!getResources().getBoolean(R.bool.is_tablet)) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setDisplayUseLogoEnabled(true);
-            }
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayUseLogoEnabled(true);
         }
     }
 }

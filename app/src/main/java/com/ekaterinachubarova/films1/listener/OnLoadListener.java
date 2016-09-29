@@ -5,5 +5,7 @@ package com.ekaterinachubarova.films1.listener;
  */
 
 public interface OnLoadListener {
+
     void onLoadMore();
+
 }

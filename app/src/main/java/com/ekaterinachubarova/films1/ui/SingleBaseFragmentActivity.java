@@ -13,11 +13,10 @@ import com.ekaterinachubarova.films1.R;
  */
 public abstract class SingleBaseFragmentActivity extends AppCompatActivity {
 
-
     protected abstract Fragment createFragment();
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_activity);
 

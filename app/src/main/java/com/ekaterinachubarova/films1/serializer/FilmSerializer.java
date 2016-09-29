@@ -12,37 +12,36 @@ import java.util.List;
  */
 
 public class FilmSerializer {
-    public static void saveFilms (List<Film> films) {
-        System.out.println("save films function");
+    public static void saveFilms(List<Film> films) {
         /**
-         * TODO : заменить на Android RX
+         * TODO : change to Android RX
          */
-        for (int i=0; i<films.size(); i++) {
+        for (int i = 0; i < films.size(); i++) {
             films.get(i).setId(films.get(i).save());
         }
     }
 
-    public static List<Film> loadFilms () {
+    public static List<Film> loadFilms() {
         List<Film> films = Film.listAll(Film.class);
         return films;
     }
 
 
-    public static void deleteFilm (Film film) {
+    public static void deleteFilm(Film film) {
         film.delete();
     }
 
-    public static Film getFilm (Long id){
+    public static Film getFilm(Long id) {
         System.out.println(id);
         return Film.findById(Film.class, id);
     }
 
-    public static void deleteAllFilms () {
+    public static void deleteAllFilms() {
         Film.deleteAll(Film.class);
     }
 
     @Subscribe
-    public static void eventSave (FilmsLab filmsLab) {
+    public static void eventSave(FilmsLab filmsLab) {
         System.out.println("Films saved");
         saveFilms(filmsLab.getFilms());
     }

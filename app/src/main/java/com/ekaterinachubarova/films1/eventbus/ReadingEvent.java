@@ -16,10 +16,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor(suppressConstructorProperties = true)
 public class ReadingEvent {
-    public static final boolean INFORMATION_FROM_DATABASE = false;
+
     public static final boolean INFORMATION_FROM_NETWORK = true;
 
-    private List<Film> films;
     private boolean flag;
-
+    private List<Film> films;
 }

@@ -19,14 +19,16 @@ public class NavBarPagerAdapter extends FragmentPagerAdapter {
     public NavBarPagerAdapter(FragmentManager mgr) {
         super(mgr);
     }
+
     @Override
     public int getCount() {
-        return(2);
+        return (2);
     }
+
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case LIST_OF_FILMS :
+            case LIST_OF_FILMS:
                 return new FilmsListFragment();
             case EMPTY_FRAGMENT:
                 return new EmptyFragment();

@@ -14,5 +14,4 @@ public interface FilmsApi {
 
     @GET("57cffac8260000181e650041")
     Call<FilmsLab> getFilmsList();
-
 }

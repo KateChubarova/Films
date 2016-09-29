@@ -14,8 +14,7 @@ import com.ekaterinachubarova.films1.R;
 
 public class EmptyFragment extends Fragment {
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-        View v = inflater.inflate(R.layout.empty_fragment, parent, false);
-        return v ;
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.empty_fragment, parent, false);
     }
 }

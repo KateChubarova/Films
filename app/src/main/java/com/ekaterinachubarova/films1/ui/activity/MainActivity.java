@@ -29,10 +29,14 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  */
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.drawer_layout) protected DrawerLayout mDrawer;
-    @BindView(R.id.toolbar) protected Toolbar toolbar;
-    @BindView(R.id.nvView) protected NavigationView nvDrawer;
-    @BindView(R.id.pager) protected ViewPager pager;
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout mDrawer;
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+    @BindView(R.id.nvView)
+    protected NavigationView nvDrawer;
+    @BindView(R.id.pager)
+    protected ViewPager pager;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -44,17 +48,19 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
         setupDrawerContent(nvDrawer);
-        setPhotoAndName (); ;
+        setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
     }
 
-    private void setPhotoAndName () {
+    private void setPhotoAndName() {
         Profile profile = Profile.getCurrentProfile();
-        View hView =  nvDrawer.getHeaderView(0);
+        View hView = nvDrawer.getHeaderView(0);
         ImageView imageView = (ImageView) hView.findViewById(R.id.photo);
-        Picasso.with(this).load(profile.getProfilePictureUri(200, 200)).
-                transform(new CropCircleTransformation()).into(imageView);
-        TextView textView = (TextView)hView.findViewById(R.id.name);
+        Picasso.with(this)
+                .load(profile.getProfilePictureUri(200, 200))
+                .transform(new CropCircleTransformation())
+                .into(imageView);
+        TextView textView = (TextView) hView.findViewById(R.id.name);
         textView.setText(profile.getName());
     }
 
@@ -76,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open,  R.string.navigation_drawer_close);
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.list_of_films:
                 pager.setCurrentItem(NavBarPagerAdapter.LIST_OF_FILMS, false);
                 break;
@@ -101,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

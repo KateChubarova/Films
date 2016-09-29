@@ -189,7 +189,7 @@ public class FacebookLoginFragment extends DialogFragment {
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(decorView, View.SCALE_X, 0.5f, 1f).setDuration(1500);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(decorView, View.SCALE_Y, 0.5f, 1f).setDuration(1500);
 
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(decorView, View.ALPHA, 0.7f , 1).setDuration(1500);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(decorView, View.ALPHA, 0.7f, 1).setDuration(1500);
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
         scaleDown.start();

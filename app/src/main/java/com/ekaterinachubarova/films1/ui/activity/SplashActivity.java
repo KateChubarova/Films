@@ -24,15 +24,16 @@ import butterknife.OnClick;
  */
 
 public class SplashActivity extends AppCompatActivity {
-    @BindView(R.id.froggy_image) ImageView frog;
+    @BindView(R.id.froggy_image)
+    ImageView frog;
 
     @OnClick(R.id.froggy_image)
-    public void onFrogClick () {
+    public void onFrogClick() {
         openNextActivity();
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splach_activity);
 
@@ -41,13 +42,13 @@ public class SplashActivity extends AppCompatActivity {
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(frog, View.SCALE_X, 3f, 2f).setDuration(5000);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(frog, View.SCALE_Y, 3f, 2f).setDuration(5000);
 
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0 , 1).setDuration(5000);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0, 1).setDuration(5000);
 
         ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
         //rotate.setRepeatCount(5);
         AnimatorSet scaleDown = new AnimatorSet();
-        scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
-        scaleDown.play(rotate).after(scaleDownX);
+        //scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
+        //scaleDown.play(rotate).after(scaleDownX);
         scaleDown.play(rotate);
         scaleDown.start();
 
@@ -75,7 +76,7 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    public void openNextActivity () {
+    public void openNextActivity() {
         boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
         Profile profile = Profile.getCurrentProfile();
 
