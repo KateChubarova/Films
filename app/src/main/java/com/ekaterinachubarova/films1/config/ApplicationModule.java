@@ -31,7 +31,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public RetrofitService provideWiseApi() {
+    public RetrofitService provideFilmsApi() {
         return new RetrofitService();
     }
 }

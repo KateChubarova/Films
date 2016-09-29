@@ -45,10 +45,10 @@ public class SplashActivity extends AppCompatActivity {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0, 1).setDuration(5000);
 
         ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
-        //rotate.setRepeatCount(5);
+        rotate.setRepeatCount(5);
         AnimatorSet scaleDown = new AnimatorSet();
-        //scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
-        //scaleDown.play(rotate).after(scaleDownX);
+        scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);
+        scaleDown.play(rotate).after(scaleDownX);
         scaleDown.play(rotate);
         scaleDown.start();
 
