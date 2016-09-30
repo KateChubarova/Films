@@ -1,19 +1,12 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ekaterinachubarova.films1.FilmsApplication;
@@ -23,8 +16,8 @@ import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
-import com.ekaterinachubarova.films1.ui.activity.FilmActivity;
-import com.squareup.picasso.Picasso;
+import com.ekaterinachubarova.films1.ui.activity.MainActivity;
+import com.ekaterinachubarova.films1.ui.adapter.FilmsListAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -34,7 +27,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ekaterinachubarova on 10.09.16.
@@ -46,7 +38,7 @@ public class FilmsListFragment extends BaseFragment {
     @Inject
     protected RetrofitService filmService;
 
-    private RVAdapter rvAdapter;
+    private FilmsListAdapter rvAdapter;
     private List<Film> films;
     private boolean isFirstLoading = true;
 
@@ -80,7 +72,7 @@ public class FilmsListFragment extends BaseFragment {
                 films.remove(films.size() - 1);
                 filmService.getFilms();
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Subscribe
@@ -97,7 +89,7 @@ public class FilmsListFragment extends BaseFragment {
     public void setChanges(List<Film> newFilms) {
         films.addAll(newFilms);
         rvAdapter.notifyDataSetChanged();
-        rvAdapter.setLoaded();
+        isLoading = false;
     }
 
 
@@ -108,7 +100,7 @@ public class FilmsListFragment extends BaseFragment {
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
         }
         films = event.getFilms();
-        rvAdapter = new RVAdapter();
+        rvAdapter = new FilmsListAdapter((MainActivity)getActivity(), films);
         rv.setAdapter(rvAdapter);
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -133,102 +125,5 @@ public class FilmsListFragment extends BaseFragment {
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
     }
-
-    public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        private final int VIEW_TYPE_ITEM = 0;
-        private final int VIEW_TYPE_LOADING = 1;
-
-        @Override
-        public int getItemViewType(int position) {
-            return films.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            switch (viewType) {
-                case VIEW_TYPE_ITEM:
-                    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item1, parent, false);
-                    return new PersonViewHolder(v);
-                case VIEW_TYPE_LOADING:
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_item, parent, false);
-                    return new LoadingViewHolder(view);
-                default:
-                    return null;
-
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            switch (rvAdapter.getItemViewType(position)) {
-                case VIEW_TYPE_ITEM:
-                    PersonViewHolder personViewHolder = (PersonViewHolder) holder;
-                    personViewHolder.enName.setText(films.get(position).getNameEng());
-                    personViewHolder.year.setText(films.get(position).getPremiere());
-                    Picasso.with(getActivity())
-                            .load(films.get(position).getImage())
-                            .error(R.mipmap.ic_launcher)
-                            .into(personViewHolder.filmImage);
-                    personViewHolder.progressBar.setVisibility(View.INVISIBLE);
-                    personViewHolder.linearLayout.setTag(position);
-                    break;
-                case VIEW_TYPE_LOADING:
-                    LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
-                    loadingViewHolder.progressBar.setIndeterminate(true);
-                    break;
-
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return films == null ? 0 : films.size();
-        }
-
-        public void setLoaded() {
-            isLoading = false;
-        }
-
-        public class LoadingViewHolder extends RecyclerView.ViewHolder {
-            public ProgressBar progressBar;
-
-            public LoadingViewHolder(View itemView) {
-                super(itemView);
-                progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
-                progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary),
-                        android.graphics.PorterDuff.Mode.MULTIPLY);
-            }
-        }
-
-        public class PersonViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.list_item)
-            protected LinearLayout linearLayout;
-            @BindView(R.id.name)
-            protected TextView enName;
-            @BindView(R.id.small_cover)
-            protected ImageView filmImage;
-            @BindView(R.id.year)
-            TextView year;
-            @BindView(R.id.cover_progress)
-            ProgressBar progressBar;
-
-            PersonViewHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
-            }
-
-            @OnClick(R.id.list_item)
-            public void onClick() {
-                Intent intent = new Intent(getActivity(), FilmActivity.class);
-                intent.putExtra(FilmFragment.FILM_PARS, films.get(getAdapterPosition()));
-                filmImage.setTransitionName(getString(R.string.fragment_image_trans));
-                Pair<View, String> pair1 = Pair.create((View) filmImage, filmImage.getTransitionName());
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(getActivity(), pair1);
-                startActivity(intent, options.toBundle());
-            }
-        }
-    }
-
 
 }
