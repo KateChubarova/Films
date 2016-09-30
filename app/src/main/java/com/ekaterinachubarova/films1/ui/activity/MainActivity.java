@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
+
+        setStatusBarColor();
     }
 
     private void setPhotoAndName() {
@@ -118,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+    }
+
+    private void setStatusBarColor (){
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
 }
