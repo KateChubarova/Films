@@ -2,6 +2,7 @@ package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.ekaterinachubarova.films1.FilmsApplication;
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.config.AppComponent;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
+import com.ekaterinachubarova.films1.eventbus.RefreshEvent;
 import com.ekaterinachubarova.films1.rest.api.RetrofitService;
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.ui.BaseFragment;
@@ -22,6 +24,7 @@ import com.ekaterinachubarova.films1.ui.adapter.FilmsListAdapter;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -31,9 +34,13 @@ import butterknife.ButterKnife;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public class FilmsListFragment extends BaseFragment {
+public class FilmsListFragment extends BaseFragment{
+    private static final String TAG = BaseFragment.class.getSimpleName();
+
     @BindView(R.id.rv)
     protected RecyclerView rv;
+    @BindView(R.id.swipeRefreshLayout)
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject
     protected RetrofitService filmService;
@@ -46,6 +53,7 @@ public class FilmsListFragment extends BaseFragment {
     private boolean isLoading;
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
+    private boolean isRefreshing;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -56,7 +64,6 @@ public class FilmsListFragment extends BaseFragment {
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(linearLayoutManager);
-
 
         filmService.getFilms();
 
@@ -92,9 +99,23 @@ public class FilmsListFragment extends BaseFragment {
         isLoading = false;
     }
 
+    @Subscribe
+    public void refreshFilms (RefreshEvent event) {
+        List<Film> newFilms = random(event.getFilms());
+        films.addAll(0, newFilms);
+        rvAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public List<Film> random (List<Film> newFilms){
+        Random random = new Random();
+        return newFilms.subList(random.nextInt(newFilms.size()), newFilms.size());
+    }
+
+
 
     public void setAdapter(ReadingEvent event) {
-        if (event.isFlag() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
+        if (event.isFlagNetwork() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
             Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
@@ -118,6 +139,20 @@ public class FilmsListFragment extends BaseFragment {
                     onLoadMore();
                     isLoading = true;
                 }
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        filmService.getRefreshFilms();
+                    }
+                }, 1000);
+
             }
         });
     }

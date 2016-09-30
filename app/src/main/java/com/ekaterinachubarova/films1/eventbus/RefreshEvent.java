@@ -5,13 +5,11 @@ import com.ekaterinachubarova.films1.rest.model.Film;
 import java.util.List;
 
 /**
- * Created by ekaterinachubarova on 21.09.16.
+ * Created by ekaterinachubarova on 30.09.16.
  */
 
-
-public class ReadingEvent extends Event{
-
-    public ReadingEvent(boolean flagNetwork, List<Film> films) {
+public class RefreshEvent extends Event{
+    public RefreshEvent(boolean flagNetwork, List<Film> films) {
         super(flagNetwork, films);
     }
 }
