@@ -78,7 +78,6 @@ public class FilmsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
                 loadingViewHolder.progressBar.setIndeterminate(true);
                 break;
-
         }
     }
 

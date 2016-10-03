@@ -53,7 +53,6 @@ public class FilmsListFragment extends BaseFragment{
     private boolean isLoading;
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
-    private boolean isRefreshing;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {

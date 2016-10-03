@@ -33,10 +33,10 @@ public class SplashActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(frog, View.SCALE_X, 3f, 2f).setDuration(3000);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(frog, View.SCALE_Y, 3f, 2f).setDuration(3000);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0, 1).setDuration(3000);
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(3000);
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(frog, View.SCALE_X, 3f, 2f).setDuration(500);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(frog, View.SCALE_Y, 3f, 2f).setDuration(500);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(frog, View.ALPHA, 0, 1).setDuration(500);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(frog, View.ROTATION_X, 360).setDuration(500);
 
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleDownX).with(scaleDownY).with(alpha);

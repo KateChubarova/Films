@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
-
         setStatusBarColor();
     }
 
