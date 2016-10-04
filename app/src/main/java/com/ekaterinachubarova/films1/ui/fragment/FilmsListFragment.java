@@ -112,7 +112,6 @@ public class FilmsListFragment extends BaseFragment{
     }
 
 
-
     public void setAdapter(ReadingEvent event) {
         if (event.isFlagNetwork() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
             Toast.makeText(getActivity(), "Loading data is failed. The information is old.", Toast.LENGTH_LONG).show();

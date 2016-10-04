@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.ekaterinachubarova.films1.rest.model.Film;
 import com.ekaterinachubarova.films1.ui.fragment.CanvaFragment;
+import com.ekaterinachubarova.films1.ui.fragment.DescriptionFilmFragment;
 
 /**
  * Created by ekaterinachubarova on 03.10.16.
@@ -30,16 +31,13 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        System.out.println(position + " position");
         switch (position) {
             case CANVA_FRAGMENT:
-                System.out.println("canva fragment");
                 return new CanvaFragment();
             case DESCRIPTION_FRAGMENT:
-                System.out.println("description fragment");
-                return new CanvaFragment();
+                return DescriptionFilmFragment.newInstance(film);
             default:
-                return new CanvaFragment();
+                return DescriptionFilmFragment.newInstance(film);
         }
     }
 

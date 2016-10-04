@@ -68,7 +68,7 @@ public class FilmFragment extends Fragment {
 
         collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getName());
 
-        tabsViewPager.setAdapter(new TabsViewPagerAdapter(getChildFragmentManager(), film));
+        tabsViewPager.setAdapter(new TabsViewPagerAdapter(getFragmentManager(), film));
         tabs.setViewPager(tabsViewPager);
 
 
