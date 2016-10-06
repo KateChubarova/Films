@@ -1,4 +1,4 @@
-package com.ekaterinachubarova.films1.canvas;
+package com.ekaterinachubarova.films1.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
@@ -19,6 +20,15 @@ public class ClockFace extends View {
     private Paint paintYellow;
     private Paint paintBerge;
     private Paint paintLightGreen;
+
+    private int heightScreen;
+    private int widthOfScreen;
+
+    private int width;
+
+    private int padding;
+
+    Measurement measure;
 
     public ClockFace(Context context) {
         super(context);
@@ -54,14 +64,22 @@ public class ClockFace extends View {
     private Paint getInitializePaint(int color) {
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setStrokeWidth(200);
+        paint.setStrokeWidth(160);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         return paint;
     }
 
     private void init() {
-        rect = new RectF(150, 150, 1200, 1200);
+        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        widthOfScreen = metrics.widthPixels;
+        heightScreen = metrics.heightPixels;
+
+        padding = widthOfScreen/6;
+        width = widthOfScreen - padding*2;
+
+        rect = new RectF(padding, heightScreen/3, padding + width, heightScreen/3+width );
+
         paintRed = getInitializePaint(Color.RED);
         paintYellow = getInitializePaint(Color.YELLOW);
         paintBerge = getInitializePaint(Color.CYAN);
@@ -70,8 +88,9 @@ public class ClockFace extends View {
 
         paintGreen.setStrokeCap(Paint.Cap.ROUND);
         paintRed.setStrokeCap(Paint.Cap.ROUND);
-
         paintGreen.setStrokeCap(Paint.Cap.ROUND);
+
+        measure = Measurement.newInstance(widthOfScreen/2, heightScreen/3 + width/2, width/2);
     }
 
 }

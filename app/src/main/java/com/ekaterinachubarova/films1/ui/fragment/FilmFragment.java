@@ -30,16 +30,18 @@ public class FilmFragment extends Fragment {
 
     public static final String FILM_PARS = "FILM";
     @BindView(R.id.big_cover)
-    ImageView filmImage;
+    protected ImageView filmImage;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbarLayout;
+    protected CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.viewpager)
-    ViewPager tabsViewPager;
+    protected ViewPager tabsViewPager;
     @BindView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
+    protected PagerSlidingTabStrip tabs;
     private Film film;
+    private TabsViewPagerAdapter tabsViewPagerAdapter;
+
 
     public static FilmFragment newInstance(Film film) {
         Bundle args = new Bundle();
@@ -53,6 +55,7 @@ public class FilmFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         film = getArguments().getParcelable(FILM_PARS);
+        tabsViewPagerAdapter = new TabsViewPagerAdapter(getFragmentManager(), film);
         setHasOptionsMenu(true);
     }
 
@@ -68,7 +71,7 @@ public class FilmFragment extends Fragment {
 
         collapsingToolbarLayout.setTitle(film.getNameEng() + " - " + film.getName());
 
-        tabsViewPager.setAdapter(new TabsViewPagerAdapter(getFragmentManager(), film));
+        tabsViewPager.setAdapter(tabsViewPagerAdapter);
         tabs.setViewPager(tabsViewPager);
 
 
@@ -79,6 +82,25 @@ public class FilmFragment extends Fragment {
                 .into(filmImage);
 
         filmImage.setTransitionName(getString(R.string.fragment_image_trans));
+
+        tabsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == TabsViewPagerAdapter.CANVA_FRAGMENT) {
+                    tabsViewPagerAdapter.startAnim();
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         return v;
     }
@@ -98,4 +120,6 @@ public class FilmFragment extends Fragment {
             actionBar.setDisplayUseLogoEnabled(true);
         }
     }
+
+
 }
