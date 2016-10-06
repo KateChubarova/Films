@@ -78,7 +78,7 @@ public class ClockFace extends View {
         padding = widthOfScreen/6;
         width = widthOfScreen - padding*2;
 
-        rect = new RectF(padding, heightScreen/3, padding + width, heightScreen/3+width );
+        rect = new RectF(padding, padding*2, padding + width, padding*2+width );
 
         paintRed = getInitializePaint(Color.RED);
         paintYellow = getInitializePaint(Color.YELLOW);
@@ -90,7 +90,7 @@ public class ClockFace extends View {
         paintRed.setStrokeCap(Paint.Cap.ROUND);
         paintGreen.setStrokeCap(Paint.Cap.ROUND);
 
-        measure = Measurement.newInstance(widthOfScreen/2, heightScreen/3 + width/2, width/2);
+        measure = Measurement.newInstance(widthOfScreen/2, padding*2 + width/2, width/2);
     }
 
 }
