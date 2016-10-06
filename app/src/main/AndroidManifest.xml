@@ -57,6 +57,10 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <service android:name=".service.FilmCountService"
+            android:enabled="true"
+            android:permission="com.ekaterinachubarova.FILM_COUNT_SERVICE_PERMISSION"/>
+
     </application>
 
 </manifest>
