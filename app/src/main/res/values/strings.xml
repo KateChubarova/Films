@@ -37,4 +37,6 @@
     <string name="photo">photo</string>
     <string name="frog">frog</string>
     <string name="canva_fragment">Canva fragment</string>
+    <string name="wi_fi">Wi-Fi</string>
+    <string name="status_changed">Wi-Fi status changed.</string>
 </resources>

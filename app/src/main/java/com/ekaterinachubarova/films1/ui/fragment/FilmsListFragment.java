@@ -68,14 +68,8 @@ public class FilmsListFragment extends BaseFragment{
 
         filmService.getFilms();
 
-        //startService();
-        getActivity().startService(new Intent(getActivity(), FilmCountService.class));
 
         return v;
-    }
-
-    private void startService (){
-        getActivity().startService(new Intent(getActivity(), FilmCountService.class));
     }
 
     private void onLoadMore() {
@@ -95,6 +89,7 @@ public class FilmsListFragment extends BaseFragment{
         if (isFirstLoading) {
             isFirstLoading = false;
             setAdapter(event);
+            getActivity().startService(new Intent(getActivity(), FilmCountService.class));
 
         } else {
             setChanges(event.getFilms());
@@ -105,8 +100,6 @@ public class FilmsListFragment extends BaseFragment{
         films.addAll(newFilms);
         rvAdapter.notifyDataSetChanged();
         isLoading = false;
-
-        //FilmsLab.countOfFilms = films.size();
     }
 
     @Subscribe
@@ -116,7 +109,6 @@ public class FilmsListFragment extends BaseFragment{
         rvAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
 
-        //FilmsLab.countOfFilms = films.size();
     }
 
     public List<Film> random (List<Film> newFilms){
@@ -169,6 +161,8 @@ public class FilmsListFragment extends BaseFragment{
 
         //FilmsLab.countOfFilms = films.size();
     }
+
+
 
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);

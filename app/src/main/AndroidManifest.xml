@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".FilmsApplication"
@@ -18,23 +19,21 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activity.SplashActivity"/>
-
+            android:parentActivityName=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.FilmActivity"
             android:parentActivityName=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -52,15 +51,20 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.ekaterinachubarova.films1.rest.model" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <service android:name=".service.FilmCountService"
-            android:enabled="true"
-            android:permission="com.ekaterinachubarova.FILM_COUNT_SERVICE_PERMISSION"/>
+        <service android:name=".service.FilmCountService"/>
 
+        <receiver
+            android:name=".receiver.WiFiReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package com.ekaterinachubarova.films1.rest.api;
 
-import android.util.Log;
-
 import com.ekaterinachubarova.films1.eventbus.Event;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.eventbus.RefreshEvent;
@@ -73,8 +71,6 @@ public class RetrofitService {
         filmsApi.getFilmsList().enqueue(new Callback<FilmsLab>() {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
-                Log.d(TAG, "I'm in the refresh films");
-
                 EventBus.getDefault().post(new RefreshEvent(Event.INFORMATION_FROM_NETWORK, response.body().getList()));
             }
 

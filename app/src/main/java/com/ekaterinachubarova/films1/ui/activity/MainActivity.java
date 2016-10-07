@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         pager.setSwipeEnabled(false);
         setStatusBarColor();
 
-        //startService(new Intent(this, FilmCountService.class));
     }
 
     private void setPhotoAndName() {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.ekaterinachubarova.films1.R;
-import com.ekaterinachubarova.films1.service.FilmCountService;
 import com.ekaterinachubarova.films1.ui.fragment.FacebookLoginFragment;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
@@ -33,8 +32,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splach_activity);
 
         ButterKnife.bind(this);
-
-        startService(new Intent(this, FilmCountService.class));
 
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(frog, View.SCALE_X, 3f, 2f).setDuration(500);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(frog, View.SCALE_Y, 3f, 2f).setDuration(500);

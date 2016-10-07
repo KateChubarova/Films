@@ -22,6 +22,7 @@ public class FilmCountService extends Service {
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
 
+
     @Override
     public void onCreate() {
         if (mTimer != null) {
@@ -44,14 +45,12 @@ public class FilmCountService extends Service {
         @Override
         public void run() {
             mHandler.post(new Runnable() {
-
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "Count of films: " + Integer.toString(FilmSerializer.getCountOfFilms()),
+                    Toast.makeText(getApplicationContext(), "Count of films: " + FilmSerializer.getCountOfFilms(),
                             Toast.LENGTH_SHORT).show();
                 }
             });
         }
-
     }
 }
