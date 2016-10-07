@@ -15,11 +15,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FilmsLab extends SugarRecord {
+    //public static int countOfFilms;
 
     @Expose
     private List<Film> list = new ArrayList<>();
 
+
+
     public FilmsLab(List<Film> films) {
         this.list = films;
     }
+
 }

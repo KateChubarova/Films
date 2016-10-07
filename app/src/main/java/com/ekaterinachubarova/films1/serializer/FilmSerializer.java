@@ -12,10 +12,13 @@ import java.util.List;
  */
 
 public class FilmSerializer {
+    //private List<Film> films;
+    private static int countOfFilms;
     public static void saveFilms(List<Film> films) {
         /**
          * TODO : change to Android RX
          */
+        countOfFilms += films.size();
         for (int i = 0; i < films.size(); i++) {
             films.get(i).setId(films.get(i).save());
         }
@@ -41,6 +44,10 @@ public class FilmSerializer {
     @Subscribe
     public static void eventSave(FilmsLab filmsLab) {
         saveFilms(filmsLab.getList());
+    }
+
+    public static int getCountOfFilms (){
+        return countOfFilms;
     }
 
 }

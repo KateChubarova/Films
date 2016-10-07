@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
         setStatusBarColor();
+
+        //startService(new Intent(this, FilmCountService.class));
     }
 
     private void setPhotoAndName() {
