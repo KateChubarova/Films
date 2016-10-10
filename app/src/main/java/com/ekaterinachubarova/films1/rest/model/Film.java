@@ -55,6 +55,10 @@ public class Film extends SugarRecord implements Parcelable {
         description = in.readString();
     }
 
+    private Film (){
+        id = (long)-1;
+    }
+
     @Override
     public int describeContents() {
         return 0;

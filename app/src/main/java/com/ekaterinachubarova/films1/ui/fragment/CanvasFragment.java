@@ -33,7 +33,7 @@ public class CanvasFragment extends Fragment {
         cursorClock.startAnim(randomize());
     }
 
-    private float randomize(){
-        return (float) (Math.random()*1000);
+    private double randomize(){
+        return (Math.random()*1000);
     }
 }

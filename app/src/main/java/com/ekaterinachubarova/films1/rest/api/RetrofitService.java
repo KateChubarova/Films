@@ -76,7 +76,7 @@ public class RetrofitService {
 
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-                EventBus.getDefault().post(new RefreshEvent(Event.INFORMATION_FROM_NETWORK, FilmSerializer.loadFilms()));
+                EventBus.getDefault().post(new RefreshEvent(!Event.INFORMATION_FROM_NETWORK, FilmSerializer.loadFilms()));
             }
         });
     }

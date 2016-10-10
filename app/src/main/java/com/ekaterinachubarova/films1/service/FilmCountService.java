@@ -17,7 +17,7 @@ import java.util.TimerTask;
  */
 
 public class FilmCountService extends Service {
-    public static final long NOTIFY_INTERVAL = 60  * 1000;
+    public static final long NOTIFY_INTERVAL = 1000 * 60 * 5;
 
     private Handler mHandler = new Handler();
     private Timer mTimer = null;

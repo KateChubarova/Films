@@ -1,14 +1,15 @@
 package com.ekaterinachubarova.films1.receiver;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
 import com.ekaterinachubarova.films1.R;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WiFiReceiver extends BroadcastReceiver {
     public WiFiReceiver() {
@@ -16,24 +17,22 @@ public class WiFiReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.videocamera)
-                        .setContentTitle("Wi-Fi")
-                        .setContentText("Connection status was changed.");
+        
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContentTitle("Films wi-fi")
+                .setContentText("Wi-fi status was changed.")
+                .setFullScreenIntent(pIntent, true)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setSmallIcon(R.drawable.videocamera);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        Notification notification = new Notification.InboxStyle(builder)
+                .setSummaryText("Wi-fi status.").build();
 
-        stackBuilder.addNextIntent(intent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(101, mBuilder.build());
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(3, notification);
+
 
     }
 }

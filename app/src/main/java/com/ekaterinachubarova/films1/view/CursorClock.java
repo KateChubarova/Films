@@ -94,8 +94,8 @@ public class CursorClock extends View{
         return Math.toRadians(x + 135);
     }
 
-    public void startAnim (float degrees) {
-        ValueAnimator va = ValueAnimator.ofFloat(0, degrees);
+    public void startAnim (double degrees) {
+        ValueAnimator va = ValueAnimator.ofFloat(0, (float)degrees);
         int mDuration = 3000;
         va.setDuration(mDuration);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

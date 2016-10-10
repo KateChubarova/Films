@@ -18,6 +18,7 @@ public class FilmSerializer {
          * TODO : change to Android RX
          */
         count += films.size();
+        System.out.println(count + " count");
         for (int i = 0; i < films.size(); i++) {
             films.get(i).setId(films.get(i).save());
         }
