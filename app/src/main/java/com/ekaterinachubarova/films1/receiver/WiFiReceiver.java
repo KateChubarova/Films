@@ -8,31 +8,40 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.ekaterinachubarova.films1.R;
+import com.ekaterinachubarova.films1.ui.activity.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WiFiReceiver extends BroadcastReceiver {
+    NotificationManager notificationManager;
     public WiFiReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class)
+                , PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(context)
-                .setContentTitle("Films wi-fi")
-                .setContentText("Wi-fi status was changed.")
-                .setFullScreenIntent(pIntent, true)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setSmallIcon(R.drawable.videocamera);
+                .setContentTitle(context.getString(R.string.notification_title))
+                .setStyle(new Notification.BigTextStyle()
+                        .bigText("Wi-fi status was changed."))
+                .addAction(R.mipmap.videocamera, "Open the app", pendingIntent)
+                .setSmallIcon(R.drawable.videocamera)
+                .setAutoCancel(true);
 
-        Notification notification = new Notification.InboxStyle(builder)
-                .setSummaryText("Wi-fi status.").build();
+        Notification notification = builder.build();
+        notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(3, notification);
+    }
 
-
+    public class CancelBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            System.out.println("REceive  " + intent.getAction());
+            notificationManager.cancel(3);
+        }
     }
 }

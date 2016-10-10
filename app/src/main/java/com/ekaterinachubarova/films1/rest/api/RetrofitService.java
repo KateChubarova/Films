@@ -1,5 +1,7 @@
 package com.ekaterinachubarova.films1.rest.api;
 
+import android.content.Context;
+
 import com.ekaterinachubarova.films1.eventbus.Event;
 import com.ekaterinachubarova.films1.eventbus.ReadingEvent;
 import com.ekaterinachubarova.films1.eventbus.RefreshEvent;
@@ -30,8 +32,9 @@ public class RetrofitService {
     private static final String TAG = RetrofitService.class.getSimpleName();
 
     private FilmsApi filmsApi;
+    private FilmSerializer filmSerializer;
 
-    public RetrofitService() {
+    public RetrofitService(Context context) {
         OkHttpClient client = new OkHttpClient.Builder()
                         .connectionPool(new ConnectionPool(5, FilmsApi.TIMEOUT, TimeUnit.SECONDS))
                         .connectTimeout(FilmsApi.TIMEOUT, TimeUnit.SECONDS)
@@ -48,6 +51,8 @@ public class RetrofitService {
                 .client(client)
                 .build()
                 .create(FilmsApi.class);
+
+        filmSerializer = FilmSerializer.newInstance(context);
     }
 
     public void getFilms() {
@@ -56,13 +61,12 @@ public class RetrofitService {
             @Override
             public void onResponse(Call<FilmsLab> call, Response<FilmsLab> response) {
                 EventBus.getDefault().post(new ReadingEvent(Event.INFORMATION_FROM_NETWORK, response.body().getList()));
-                FilmSerializer.deleteAllFilms();
-                FilmSerializer.saveFilms(response.body().getList());
+                filmSerializer.saveFilms(response.body().getList());
             }
 
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-                EventBus.getDefault().post(new ReadingEvent(!Event.INFORMATION_FROM_NETWORK, FilmSerializer.loadFilms()));
+                EventBus.getDefault().post(new ReadingEvent(!Event.INFORMATION_FROM_NETWORK, filmSerializer.loadFilms()));
             }
         });
     }
@@ -76,7 +80,7 @@ public class RetrofitService {
 
             @Override
             public void onFailure(Call<FilmsLab> call, Throwable t) {
-                EventBus.getDefault().post(new RefreshEvent(!Event.INFORMATION_FROM_NETWORK, FilmSerializer.loadFilms()));
+                EventBus.getDefault().post(new RefreshEvent(!Event.INFORMATION_FROM_NETWORK, filmSerializer.loadFilms()));
             }
         });
     }

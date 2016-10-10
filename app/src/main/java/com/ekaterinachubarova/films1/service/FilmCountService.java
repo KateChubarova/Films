@@ -1,6 +1,7 @@
 package com.ekaterinachubarova.films1.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,7 +23,6 @@ public class FilmCountService extends Service {
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
 
-
     @Override
     public void onCreate() {
         if (mTimer != null) {
@@ -30,7 +30,7 @@ public class FilmCountService extends Service {
         } else {
             mTimer = new Timer();
         }
-        mTimer.scheduleAtFixedRate(new CountOfFilmDisplayTask(), 0,
+        mTimer.scheduleAtFixedRate(new CountOfFilmDisplayTask(this), 0,
                 NOTIFY_INTERVAL);
     }
 
@@ -41,13 +41,18 @@ public class FilmCountService extends Service {
     }
 
     class CountOfFilmDisplayTask extends TimerTask {
+        private Context context;
+
+        CountOfFilmDisplayTask(Context context){
+            this.context = context;
+        }
 
         @Override
         public void run() {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "Count of films: " + FilmSerializer.getCountOfFilms(),
+                    Toast.makeText(getApplicationContext(), "Count of films: " + FilmSerializer.newInstance(context).getCountOfFilms(),
                             Toast.LENGTH_SHORT).show();
                 }
             });
