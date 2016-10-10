@@ -77,6 +77,5 @@ public class Film implements Parcelable {
         parcel.writeString(premiere);
         parcel.writeString(description);
     }
-
 }
 

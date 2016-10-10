@@ -132,5 +132,11 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
 }
 
