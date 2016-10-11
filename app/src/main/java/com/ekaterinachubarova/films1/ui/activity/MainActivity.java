@@ -3,6 +3,7 @@ package com.ekaterinachubarova.films1.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -53,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
+
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
+
+        System.out.println(data + " data");
     }
 
     private void setPhotoAndName() {

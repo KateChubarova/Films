@@ -20,7 +20,17 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:parentActivityName=".ui.activity.SplashActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter android:label="@string/filter_title_viewgizmos">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="http"
+                    android:host="www.ekaterinachubarova.com"
+                    android:pathPrefix="/films" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -54,6 +64,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+
 
     </application>
 
