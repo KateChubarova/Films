@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import com.orm.SugarRecord;
-import com.orm.dsl.Table;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +15,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Table
-public class Film extends SugarRecord implements Parcelable {
+@DatabaseTable(tableName = "films")
+public class Film implements Parcelable {
     public static final Creator<Film> CREATOR = new Creator<Film>() {
         @Override
         public Film createFromParcel(Parcel in) {
@@ -28,22 +28,25 @@ public class Film extends SugarRecord implements Parcelable {
             return new Film[size];
         }
     };
-
-    private Long id;
-
     @Expose
+    @DatabaseField
     String description;
-
+    @DatabaseField(generatedId = true)
+    private Long id;
     @Expose
+    @DatabaseField
     private String name;
 
     @Expose
+    @DatabaseField
     private String image;
 
     @Expose
+    @DatabaseField
     private String nameEng;
 
     @Expose
+    @DatabaseField
     private String premiere;
 
     protected Film(Parcel in) {
@@ -53,6 +56,11 @@ public class Film extends SugarRecord implements Parcelable {
         nameEng = in.readString();
         premiere = in.readString();
         description = in.readString();
+    }
+
+
+    private Film() {
+
     }
 
     @Override
@@ -69,16 +77,5 @@ public class Film extends SugarRecord implements Parcelable {
         parcel.writeString(premiere);
         parcel.writeString(description);
     }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 }
 

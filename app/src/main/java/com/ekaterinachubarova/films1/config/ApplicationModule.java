@@ -32,7 +32,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public RetrofitService provideFilmsApi() {
-        return new RetrofitService();
+        return new RetrofitService(application.getApplicationContext());
     }
 }
 

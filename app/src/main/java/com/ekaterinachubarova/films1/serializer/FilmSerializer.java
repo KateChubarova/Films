@@ -1,10 +1,12 @@
 package com.ekaterinachubarova.films1.serializer;
 
+import android.content.Context;
+
 import com.ekaterinachubarova.films1.rest.model.Film;
-import com.ekaterinachubarova.films1.rest.model.FilmsLab;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -12,35 +14,58 @@ import java.util.List;
  */
 
 public class FilmSerializer {
+    private static Dao <Film, Long> filmsDao;
+    private static FilmSerializer filmSerializer;
+
+    private FilmSerializer (Context context){
+        FilmsDatabaseOpenHelper todoOpenDatabaseHelper = OpenHelperManager.getHelper(context,
+                FilmsDatabaseOpenHelper.class);
+        try {
+            filmsDao = todoOpenDatabaseHelper.getDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static FilmSerializer newInstance (Context context) {
+        if (filmSerializer == null)
+            filmSerializer = new FilmSerializer(context);
+        return filmSerializer;
+    }
+
     public static void saveFilms(List<Film> films) {
-        /**
-         * TODO : change to Android RX
-         */
-        for (int i = 0; i < films.size(); i++) {
-            films.get(i).setId(films.get(i).save());
+        for (int i=0; i<films.size(); i++) {
+            try {
+                filmsDao.create(films.get(i));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static List<Film> loadFilms() {
-        return Film.listAll(Film.class);
+        try {
+            return filmsDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } return null;
     }
 
 
     public static void deleteFilm(Film film) {
-        film.delete();
+
     }
 
     public static Film getFilm(Long id) {
-        return Film.findById(Film.class, id);
+        return null;
     }
 
     public static void deleteAllFilms() {
-        Film.deleteAll(Film.class);
+
     }
 
-    @Subscribe
-    public static void eventSave(FilmsLab filmsLab) {
-        saveFilms(filmsLab.getList());
+    public static int getCountOfFilms(){
+        return loadFilms().size();
     }
 
 }

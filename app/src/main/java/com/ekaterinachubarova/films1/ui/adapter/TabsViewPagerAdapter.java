@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.ekaterinachubarova.films1.rest.model.Film;
-import com.ekaterinachubarova.films1.ui.fragment.CanvaFragment;
+import com.ekaterinachubarova.films1.ui.fragment.CanvasFragment;
 import com.ekaterinachubarova.films1.ui.fragment.DescriptionFilmFragment;
 
 /**
@@ -14,14 +14,17 @@ import com.ekaterinachubarova.films1.ui.fragment.DescriptionFilmFragment;
 
 public class TabsViewPagerAdapter extends FragmentPagerAdapter {
 
-    private static final int CANVA_FRAGMENT = 1;
-    private static final int DESCRIPTION_FRAGMENT = 0;
+    public static final int CANVA_FRAGMENT = 1;
+    public static final int DESCRIPTION_FRAGMENT = 0;
 
-    private Film film;
+    private DescriptionFilmFragment descriptionFilmFragment;
+    private CanvasFragment canvasFragment;
 
     public TabsViewPagerAdapter(FragmentManager fragmentManager, Film film) {
         super(fragmentManager);
-        this.film = film;
+        descriptionFilmFragment = DescriptionFilmFragment.newInstance(film);
+        canvasFragment = new CanvasFragment();
+
     }
 
     @Override
@@ -33,11 +36,11 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case CANVA_FRAGMENT:
-                return new CanvaFragment();
+                return canvasFragment;
             case DESCRIPTION_FRAGMENT:
-                return DescriptionFilmFragment.newInstance(film);
+                return descriptionFilmFragment;
             default:
-                return DescriptionFilmFragment.newInstance(film);
+                return descriptionFilmFragment;
         }
     }
 
@@ -52,4 +55,10 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
                 return "Film's description";
         }
     }
+
+    public void startAnim () {
+        canvasFragment.startAnim();
+    }
+
+
 }

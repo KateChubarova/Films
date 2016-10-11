@@ -1,0 +1,26 @@
+# --table-start--
+dataClass=com.ekaterinachubarova.films1.rest.model.Film
+tableName=films
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=description
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=image
+# --field-end--
+# --field-start--
+fieldName=nameEng
+# --field-end--
+# --field-start--
+fieldName=premiere
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

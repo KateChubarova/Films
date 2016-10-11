@@ -30,15 +30,13 @@ repositories {
     mavenCentral()
 }
 
-
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.github.satyan:sugar:1.5'
+//    compile 'com.github.satyan:sugar:1.5'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -62,4 +60,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.shawnlin:PreferencesManager:1.0.2'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    //database ORMLite
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
 }
