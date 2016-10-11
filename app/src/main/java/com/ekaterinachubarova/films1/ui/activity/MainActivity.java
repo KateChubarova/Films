@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
 
-
         Intent intent = getIntent();
         String action = intent.getAction();
         Uri data = intent.getData();
