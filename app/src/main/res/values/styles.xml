@@ -1,31 +1,22 @@
-<resources>
-
+<resources>  
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+         <item name="colorPrimary">@color/colorPrimary</item> 
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> 
+        <item name="colorAccent">@color/colorAccent</item> 
+        <item name="android:windowTranslucentStatus">true</item> 
+        <item name="android:windowTranslucentNavigation">true</item> 
     </style>
+      
 
-    <style name="expandedappbar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">28sp</item>
+    <style name="expandedappbar" parent="@android:style/TextAppearance.Medium"> 
+        <item name="android:textSize">28sp</item> 
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
+         <item name="android:textStyle">bold</item>
     </style>
+      
 
-    <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">
+    <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium"> 
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/white</item>
+         <item name="android:textColor">@android:color/white</item> 
     </style>
-
-    <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
 </resources>
