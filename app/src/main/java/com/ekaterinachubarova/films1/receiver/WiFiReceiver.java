@@ -24,10 +24,10 @@ public class WiFiReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        if (!wifi.isConnectedOrConnecting()) {
-            notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        NetworkInfo wifi = cm.getActiveNetworkInfo();
+        notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        
+        if (wifi == null) {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class)
                     , PendingIntent.FLAG_UPDATE_CURRENT);
             Notification.Builder builder = new Notification.Builder(context)

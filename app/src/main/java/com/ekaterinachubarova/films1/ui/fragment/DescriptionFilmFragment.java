@@ -1,6 +1,5 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,11 +37,7 @@ public class DescriptionFilmFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.description_film_fragment, parent, false);
-        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_head));
         ButterKnife.bind(this, v);
-
-        premiere.setTypeface(face);
-        description.setTypeface(face);
 
         premiere.setText(film.getPremiere());
         description.setText(film.getDescription());

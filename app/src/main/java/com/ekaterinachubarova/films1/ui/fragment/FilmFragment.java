@@ -83,6 +83,7 @@ public class FilmFragment extends Fragment {
 
         filmImage.setTransitionName(getString(R.string.fragment_image_trans));
 
+
         tabsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

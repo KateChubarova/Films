@@ -16,7 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor(suppressConstructorProperties = true)
 public abstract class Event {
     public static boolean INFORMATION_FROM_NETWORK = true;
-
     private boolean flagNetwork;
     private List<Film> films;
 }
