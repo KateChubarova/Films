@@ -40,4 +40,10 @@
     <string name="wi_fi">Wi-Fi</string>
     <string name="status_changed">Wi-Fi status changed.</string>
     <string name="notification_title">Films wi-fi</string>
+
+    <string name="action_required_additional_permission">Action requires additional permission, please allow it.</string>
+    <string name="settings">Settings</string>
+
+
+    <string name="key_api">AIzaSyArtprtAI7loJwaiLuI0bVBi6Oou7YSziY</string>
 </resources>

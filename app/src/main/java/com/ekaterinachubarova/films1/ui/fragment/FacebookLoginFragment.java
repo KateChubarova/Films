@@ -37,9 +37,9 @@ import butterknife.ButterKnife;
  */
 
 public class FacebookLoginFragment extends DialogFragment {
-    
+
     private static final String TAG = FacebookLoginFragment.class.getSimpleName();
-    
+
     @BindView(R.id.login_button)
     LoginButton loginButton;
 

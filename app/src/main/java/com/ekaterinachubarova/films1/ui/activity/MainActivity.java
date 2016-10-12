@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 pager.setCurrentItem(NavBarPagerAdapter.LIST_OF_FILMS, false);
                 break;
             case R.id.empty_fragment:
-                pager.setCurrentItem(NavBarPagerAdapter.EMPTY_FRAGMENT, false);
+                pager.setCurrentItem(NavBarPagerAdapter.MAP_FRAGMENT, false);
+                NavBarPagerAdapter.setLocation();
                 break;
             case R.id.log_out:
                 LoginManager.getInstance().logOut();

@@ -16,7 +16,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Created by ekaterinachubarova on 20.09.16.
  */
 
-public class FilmsApplication extends Application{
+public class FilmsApplication extends Application {
     private AppComponent appComponent;
 
     public static AppComponent getAppComponent(Context context) {

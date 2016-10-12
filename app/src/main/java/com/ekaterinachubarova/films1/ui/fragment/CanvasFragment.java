@@ -34,6 +34,6 @@ public class CanvasFragment extends Fragment {
     }
 
     private double randomize(){
-        return (Math.random()*1000);
+        return (Math.random()*200);
     }
 }

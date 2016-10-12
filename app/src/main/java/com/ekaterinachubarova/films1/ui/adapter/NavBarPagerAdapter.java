@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.ekaterinachubarova.films1.ui.fragment.EmptyFragment;
+import com.ekaterinachubarova.films1.ui.fragment.MapFragment;
 import com.ekaterinachubarova.films1.ui.fragment.FilmsListFragment;
 
 /**
@@ -13,11 +13,13 @@ import com.ekaterinachubarova.films1.ui.fragment.FilmsListFragment;
 
 public class NavBarPagerAdapter extends FragmentPagerAdapter {
 
-    public static final int EMPTY_FRAGMENT = 1;
+    public static final int MAP_FRAGMENT = 1;
     public static final int LIST_OF_FILMS = 0;
+    private static MapFragment mapFragment;
 
     public NavBarPagerAdapter(FragmentManager mgr) {
         super(mgr);
+        mapFragment = new MapFragment();
     }
 
     @Override
@@ -30,11 +32,15 @@ public class NavBarPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case LIST_OF_FILMS:
                 return new FilmsListFragment();
-            case EMPTY_FRAGMENT:
-                return new EmptyFragment();
+            case MAP_FRAGMENT:
+                return mapFragment;
             default:
                 return new FilmsListFragment();
         }
+    }
+
+    public static void setLocation(){
+        mapFragment.setMyLocation();
     }
 }
 
