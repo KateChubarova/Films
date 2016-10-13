@@ -2,15 +2,16 @@ package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by ekaterinachubarova on 24.09.16.
  */
@@ -37,6 +41,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private DecimalFormat df = new DecimalFormat("#.##");
+    private static AlertDialog alert;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -44,38 +50,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
+        ButterKnife.bind(this, v);
+
+        createDialog();
         return v;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        setMyLocation();
+        setMapUtils();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == ValidationUtils.PERMISSION_REQUEST_CODE) {
-            boolean value = ValidationUtils.checkPermissionsGranted(grantResults);
-            if (value) {
-                setMyLocation();
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
 
-    public void setMyLocation() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ValidationUtils.checkPermissions(this, mapFragment.getView(),
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION);
+    private void setMapUtils() {
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        mMap.setIndoorEnabled(false);
 
-        mMap.setMyLocationEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMyCurrentPosition(), 15));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -93,24 +89,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+
+        setMyLocation();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == ValidationUtils.PERMISSION_REQUEST_CODE) {
+            boolean value = ValidationUtils.checkPermissionsGranted(grantResults);
+            if (value) {
+                setMyLocation();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void setMyLocation() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMyCurrentPosition(), 15));
     }
 
     private LatLng getMyCurrentPosition() {
-        LocationManager locationManager = (LocationManager)
-                getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
-        Location location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, false));
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
+        LocationManager locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        Location lastlocation = locationManager.getLastKnownLocation(locationProvider);
+
+        double latitude = lastlocation.getLatitude();
+        double longitude = lastlocation.getLongitude();
 
         return new LatLng(latitude, longitude);
     }
@@ -131,6 +145,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ValidationUtils.SETTINGS_REQUEST_CODE) {
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
             setMyLocation();
         }
     }
@@ -141,6 +162,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (isVisibleToUser) {
             mapFragment.getMapAsync(this);
         }
+    }
+
+    @OnClick (R.id.find_my_location)
+    protected void findMe(){
+        setMyLocation();
+    }
+
+    public static void showDialog(){
+        alert.show();
+    }
+
+    private void createDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Panorama")
+                .setMessage("Sorry, there is no panorama for this location.")
+                .setIcon(R.mipmap.videocamera)
+                .setCancelable(false)
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alert = builder.create();
     }
 }
 

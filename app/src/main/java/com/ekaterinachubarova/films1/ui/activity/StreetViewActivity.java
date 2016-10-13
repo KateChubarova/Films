@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.ekaterinachubarova.films1.R;
+import com.ekaterinachubarova.films1.ui.fragment.MapFragment;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
@@ -48,7 +49,7 @@ public class StreetViewActivity extends FragmentActivity implements OnStreetView
                 if (streetViewPanoramaLocation != null && streetViewPanoramaLocation.links != null) {
 
                 } else {
-                    MainActivity.showDialog();
+                    MapFragment.showDialog();
                     onBackPressed();
 
                 }
