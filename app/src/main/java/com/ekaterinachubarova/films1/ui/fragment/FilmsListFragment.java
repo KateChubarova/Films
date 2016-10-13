@@ -159,10 +159,7 @@ public class FilmsListFragment extends BaseFragment{
             }
         });
 
-        //FilmsLab.countOfFilms = films.size();
     }
-
-
 
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);

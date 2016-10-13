@@ -18,13 +18,10 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
     public static final int DESCRIPTION_FRAGMENT = 0;
 
     private DescriptionFilmFragment descriptionFilmFragment;
-    private CanvasFragment canvasFragment;
 
     public TabsViewPagerAdapter(FragmentManager fragmentManager, Film film) {
         super(fragmentManager);
         descriptionFilmFragment = DescriptionFilmFragment.newInstance(film);
-        canvasFragment = new CanvasFragment();
-
     }
 
     @Override
@@ -36,7 +33,7 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case CANVA_FRAGMENT:
-                return canvasFragment;
+                return new CanvasFragment();
             case DESCRIPTION_FRAGMENT:
                 return descriptionFilmFragment;
             default:
@@ -48,17 +45,12 @@ public class TabsViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case CANVA_FRAGMENT:
-                return "Canva fragment";
+                return "Canvas fragment";
             case DESCRIPTION_FRAGMENT:
                 return "Film's description";
             default:
                 return "Film's description";
         }
     }
-
-    public void startAnim () {
-        canvasFragment.startAnim();
-    }
-
 
 }

@@ -15,11 +15,10 @@ public class NavBarPagerAdapter extends FragmentPagerAdapter {
 
     public static final int MAP_FRAGMENT = 1;
     public static final int LIST_OF_FILMS = 0;
-    private static MapFragment mapFragment;
+
 
     public NavBarPagerAdapter(FragmentManager mgr) {
         super(mgr);
-        mapFragment = new MapFragment();
     }
 
     @Override
@@ -33,14 +32,12 @@ public class NavBarPagerAdapter extends FragmentPagerAdapter {
             case LIST_OF_FILMS:
                 return new FilmsListFragment();
             case MAP_FRAGMENT:
-                return mapFragment;
+                return new MapFragment();
             default:
                 return new FilmsListFragment();
         }
     }
 
-    public static void setLocation(){
-        mapFragment.setMyLocation();
-    }
+
 }
 

@@ -29,11 +29,16 @@ public class CanvasFragment extends Fragment {
         return v;
     }
 
-    public void startAnim () {
-        cursorClock.startAnim(randomize());
-    }
-
     private double randomize(){
         return (Math.random()*200);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            cursorClock.startAnim(randomize());
+        }
+    }
+
 }

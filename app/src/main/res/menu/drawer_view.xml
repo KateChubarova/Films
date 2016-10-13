@@ -3,6 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/list_of_films"
+            android:checked="true"
             android:icon="@mipmap/videocamera"
             android:title="List of films" />
         <item

@@ -83,26 +83,6 @@ public class FilmFragment extends Fragment {
 
         filmImage.setTransitionName(getString(R.string.fragment_image_trans));
 
-
-        tabsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == TabsViewPagerAdapter.CANVA_FRAGMENT) {
-                    tabsViewPagerAdapter.startAnim();
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         return v;
     }
 

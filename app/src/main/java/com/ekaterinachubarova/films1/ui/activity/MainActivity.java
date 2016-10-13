@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.empty_fragment:
                 pager.setCurrentItem(NavBarPagerAdapter.MAP_FRAGMENT, false);
-                NavBarPagerAdapter.setLocation();
                 break;
             case R.id.log_out:
                 LoginManager.getInstance().logOut();
