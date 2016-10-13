@@ -9,7 +9,7 @@
         <item
             android:id="@+id/empty_fragment"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/empty_fragment" />
+            android:title="Map" />
     </group>
 
     <item

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ekaterinachubarova.films1.R;
+import com.ekaterinachubarova.films1.ui.activity.StreetViewActivity;
 import com.ekaterinachubarova.films1.utils.ValidationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,7 +27,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 
 /**
  * Created by ekaterinachubarova on 24.09.16.
@@ -36,7 +36,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    private HashMap<LatLng, Marker> markers = new HashMap<>();
     private DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
@@ -87,8 +86,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                //LatLng latLng = marker.getPosition();
-                //System.out.println("On info window click");
+                Intent intent = new Intent(getActivity(), StreetViewActivity.class);
+                intent.putExtra("latitude", marker.getPosition().latitude);
+                intent.putExtra("longitude", marker.getPosition().longitude);
+                startActivity(intent);
 
             }
         });

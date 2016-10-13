@@ -1,6 +1,7 @@
 package com.ekaterinachubarova.films1.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected SwipeEnableViewPager pager;
     private ActionBarDrawerToggle drawerToggle;
 
+    private static AlertDialog alert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,23 @@ public class MainActivity extends AppCompatActivity {
         Uri data = intent.getData();
 
         System.out.println(data + " data");
+
+        createDilag();
+    }
+
+    private void createDilag(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Panorama")
+                .setMessage("Sorry, there is no panorama for this location.")
+                .setIcon(R.mipmap.videocamera)
+                .setCancelable(false)
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alert = builder.create();
     }
 
     private void setPhotoAndName() {
@@ -139,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    public static void showDialog(){
+        alert.show();
     }
 
 }
