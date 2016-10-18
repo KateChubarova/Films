@@ -1,13 +1,17 @@
 package com.ekaterinachubarova.films1.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,16 +26,20 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by ekaterinachubarova on 24.09.16.
  */
 
 public class MainActivity extends AppCompatActivity {
+    public static final String BITMAP_STORAGE_KEY = "BITMAP STORAGE KEY";
+    private static final int CHOOSE_PICTURE = 1;
+    private static final int TAKE_PICTURE = 2;
     @BindView(R.id.drawer_layout)
     protected DrawerLayout mDrawer;
     @BindView(R.id.toolbar)
@@ -40,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
     protected NavigationView nvDrawer;
     @BindView(R.id.pager)
     protected SwipeEnableViewPager pager;
+    private Bitmap mImageBitmap;
     private ActionBarDrawerToggle drawerToggle;
+
+    private AlertDialog alert;
+    private ImageView imageView;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,25 +67,75 @@ public class MainActivity extends AppCompatActivity {
         setPhotoAndName();
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData();
-
+        createDialog();
     }
 
+    private void choosePhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CHOOSE_PICTURE);
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, TAKE_PICTURE);
+    }
+
+    private void createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Photo master")
+                .setMessage("Do you want to take a photo or choose from the album?")
+                .setIcon(R.mipmap.videocamera)
+                .setCancelable(false)
+                .setPositiveButton("Take photo", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dispatchTakePictureIntent();
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Choose from album",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                choosePhoto();
+                                dialog.cancel();
+                            }
+                        });
+        alert = builder.create();
+    }
 
 
     private void setPhotoAndName() {
         Profile profile = Profile.getCurrentProfile();
         View hView = nvDrawer.getHeaderView(0);
-        ImageView imageView = (ImageView) hView.findViewById(R.id.photo);
-        Picasso.with(this)
-                .load(profile.getProfilePictureUri(200, 200))
-                .transform(new CropCircleTransformation())
-                .into(imageView);
+        imageView = (ImageView) hView.findViewById(R.id.photo);
+        imageUri = profile.getProfilePictureUri(200, 200);
+        changePhoto();
         TextView textView = (TextView) hView.findViewById(R.id.name);
         textView.setText(profile.getName());
+
+        hView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.show();
+            }
+        });
+    }
+
+    private void changePhoto() {
+        Picasso.with(this)
+                .load(imageUri)
+                .transform(new CropCircleTransformation())
+                .into(imageView);
     }
 
     @Override
@@ -138,10 +201,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case CHOOSE_PICTURE:
+                imageUri = data.getData();
+                changePhoto();
+                break;
+            case TAKE_PICTURE:
+                handleSmallCameraPhoto(data);
+
+        }
     }
 
+    private void handleSmallCameraPhoto(Intent intent) {
+
+        Bundle extras = intent.getExtras();
+        mImageBitmap = (Bitmap) extras.get("data");
+        imageUri = getImageUri(this, mImageBitmap);
+        changePhoto();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        imageUri = Uri.parse(savedInstanceState.getString(BITMAP_STORAGE_KEY));
+        changePhoto();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(BITMAP_STORAGE_KEY, imageUri.toString());
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
 
 }
 

@@ -16,21 +16,12 @@ import android.view.View;
 public class CursorClock extends View{
     private Paint paint;
 
-    private int middleCornerX;
-    private int middleCornerY;
-
-    private int leftCornerX;
-    private int leftCornerY;
-
-    private int rightCornerY;
-    private int rightCornerX;
-
-    private double alpha;
+    private float alpha;
 
     private Measurement measure;
-    private double rMiddle;
-    private double rLeft;
-    private double rRight;
+    private float rMiddle;
+    private float rLeft;
+    private float rRight;
 
 
     public CursorClock(Context context) {
@@ -48,22 +39,18 @@ public class CursorClock extends View{
         init();
     }
 
-    public CursorClock(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        middleCornerX = (int) (measure.getCenterX() + rMiddle * Math.cos(getAlphaDegree(alpha)));
-        middleCornerY = (int) (measure.getCenterY() + rMiddle * Math.sin(getAlphaDegree(alpha)));
+        int middleCornerX = (int) (measure.getCenterX() + rMiddle * Math.cos(getAlphaDegree(alpha)));
+        int middleCornerY = (int) (measure.getCenterY() + rMiddle * Math.sin(getAlphaDegree(alpha)));
 
-        leftCornerX = (int) (measure.getCenterX() + rLeft * Math.cos(getAlphaDegree(alpha + 4)));
-        leftCornerY = (int) (measure.getCenterY() + rLeft * Math.sin(getAlphaDegree(alpha + 4)));
+        int leftCornerX = (int) (measure.getCenterX() + rLeft * Math.cos(getAlphaDegree(alpha + 4)));
+        int leftCornerY = (int) (measure.getCenterY() + rLeft * Math.sin(getAlphaDegree(alpha + 4)));
 
-        rightCornerX = (int) (measure.getCenterX() + rRight * Math.cos(getAlphaDegree(alpha - 4)));
-        rightCornerY = (int) (measure.getCenterY() + rRight * Math.sin(getAlphaDegree(alpha - 4)));
+        int rightCornerX = (int) (measure.getCenterX() + rRight * Math.cos(getAlphaDegree(alpha - 4)));
+        int rightCornerY = (int) (measure.getCenterY() + rRight * Math.sin(getAlphaDegree(alpha - 4)));
 
         Path path = new Path();
 
@@ -72,7 +59,6 @@ public class CursorClock extends View{
         path.lineTo(rightCornerX, rightCornerY);
 
         canvas.drawPath(path, paint);
-        invalidate();
     }
 
     private void init() {
@@ -90,12 +76,12 @@ public class CursorClock extends View{
         paint.setStyle(Paint.Style.FILL);
     }
 
-    private double getAlphaDegree(double x) {
+    private double getAlphaDegree(float x) {
         return Math.toRadians(x + 135);
     }
 
-    public void startAnim (double degrees) {
-        ValueAnimator va = ValueAnimator.ofFloat(0, (float)degrees);
+    public void startAnim (float degrees) {
+        ValueAnimator va = ValueAnimator.ofFloat(0, degrees);
         int mDuration = 3000;
         va.setDuration(mDuration);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

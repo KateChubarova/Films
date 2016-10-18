@@ -42,7 +42,6 @@ public class FilmFragment extends Fragment {
     private Film film;
     private TabsViewPagerAdapter tabsViewPagerAdapter;
 
-
     public static FilmFragment newInstance(Film film) {
         Bundle args = new Bundle();
         args.putParcelable(FILM_PARS, film);
@@ -101,6 +100,5 @@ public class FilmFragment extends Fragment {
             actionBar.setDisplayUseLogoEnabled(true);
         }
     }
-
 
 }
