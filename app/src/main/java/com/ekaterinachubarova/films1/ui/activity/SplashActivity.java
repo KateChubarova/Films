@@ -52,7 +52,6 @@ public class SplashActivity extends AppCompatActivity {
                 openNextActivity();
             }
         });
-
     }
 
     public void openNextActivity() {

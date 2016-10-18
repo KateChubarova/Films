@@ -54,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alert;
     private ImageView imageView;
     private Uri imageUri;
+    //private ActionMode actionMode;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
@@ -69,6 +71,53 @@ public class MainActivity extends AppCompatActivity {
         pager.setSwipeEnabled(false);
         createDialog();
     }
+
+//    private ActionMode.Callback callback = new ActionMode.Callback() {
+//
+//        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//            mode.getMenuInflater().inflate(R.menu.context, menu);
+//            RelativeLayout m = (RelativeLayout) menu.findItem(
+//                    R.id.edt_mySearch).getActionView();
+//            EditText mSearchView = (EditText) m
+//                    .findViewById(R.id.edt_search);
+//
+//            mSearchView.addTextChangedListener(new TextWatcher() {
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start,
+//                                          int before, int count) {
+//                    // TODO Auto-generated method stub
+//
+//                }
+//
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start,
+//                                              int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    // search here
+//                }
+//            });
+//            return true;
+//        }
+//
+//        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+//            return false;
+//        }
+//
+//        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+//            //Log.d(LOG_TAG, "item " + item.getTitle());
+//            return false;
+//        }
+//
+//        public void onDestroyActionMode(ActionMode mode) {
+//            //Log.d(LOG_TAG, "destroy");
+//            actionMode = null;
+//        }
+//    };
 
     private void choosePhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK,
@@ -184,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item);
     }
 
     @Override
@@ -218,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleSmallCameraPhoto(Intent intent) {
-
         Bundle extras = intent.getExtras();
         mImageBitmap = (Bitmap) extras.get("data");
         imageUri = getImageUri(this, mImageBitmap);

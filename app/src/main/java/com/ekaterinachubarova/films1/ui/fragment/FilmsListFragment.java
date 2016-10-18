@@ -6,9 +6,17 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ekaterinachubarova.films1.FilmsApplication;
@@ -36,7 +44,7 @@ import butterknife.ButterKnife;
 /**
  * Created by ekaterinachubarova on 10.09.16.
  */
-public class FilmsListFragment extends BaseFragment{
+public class FilmsListFragment extends BaseFragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
 
     @BindView(R.id.rv)
@@ -56,6 +64,72 @@ public class FilmsListFragment extends BaseFragment{
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
 
+    private ActionMode actionMode;
+
+    private android.view.ActionMode.Callback callback = new android.view.ActionMode.Callback() {
+
+        public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.context, menu);
+            RelativeLayout m = (RelativeLayout) menu.findItem(
+                    R.id.edt_mySearch).getActionView();
+            EditText mSearchView = (EditText) m
+                    .findViewById(R.id.edt_search);
+
+            mSearchView.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start,
+                                          int before, int count) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start,
+                                              int count, int after) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // search here
+                }
+            });
+            return true;
+        }
+
+        public boolean onPrepareActionMode(android.view.ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
+            return false;
+        }
+
+        public void onDestroyActionMode(android.view.ActionMode mode) {
+            actionMode = null;
+        }
+    };
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item11) {
+            if (actionMode == null)
+                actionMode = getActivity().startActionMode(callback);
+            else
+                actionMode.finish();
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
@@ -70,6 +144,12 @@ public class FilmsListFragment extends BaseFragment{
 
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void onLoadMore() {
@@ -103,7 +183,7 @@ public class FilmsListFragment extends BaseFragment{
     }
 
     @Subscribe
-    public void refreshFilms (RefreshEvent event) {
+    public void refreshFilms(RefreshEvent event) {
         List<Film> newFilms = random(event.getFilms());
         films.addAll(0, newFilms);
         rvAdapter.notifyDataSetChanged();
@@ -111,7 +191,7 @@ public class FilmsListFragment extends BaseFragment{
 
     }
 
-    public List<Film> random (List<Film> newFilms){
+    public List<Film> random(List<Film> newFilms) {
         Random random = new Random();
         return newFilms.subList(random.nextInt(newFilms.size()), newFilms.size());
     }
@@ -124,7 +204,7 @@ public class FilmsListFragment extends BaseFragment{
             Toast.makeText(getActivity(), "The information is updated.", Toast.LENGTH_LONG).show();
         }
         films = event.getFilms();
-        rvAdapter = new FilmsListAdapter((MainActivity)getActivity(), films);
+        rvAdapter = new FilmsListAdapter((MainActivity) getActivity(), films);
         rv.setAdapter(rvAdapter);
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -158,7 +238,6 @@ public class FilmsListFragment extends BaseFragment{
 
             }
         });
-
     }
 
     public void setUpComponent(AppComponent appComponent) {
