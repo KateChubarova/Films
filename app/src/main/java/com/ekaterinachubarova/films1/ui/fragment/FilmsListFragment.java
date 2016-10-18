@@ -33,6 +33,7 @@ import com.ekaterinachubarova.films1.ui.adapter.FilmsListAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -46,26 +47,22 @@ import butterknife.ButterKnife;
  */
 public class FilmsListFragment extends BaseFragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
-
+    private List<Film> filteredList = new ArrayList<>();
     @BindView(R.id.rv)
     protected RecyclerView rv;
     @BindView(R.id.swipeRefreshLayout)
     protected SwipeRefreshLayout swipeRefreshLayout;
-
     @Inject
     protected RetrofitService filmService;
-
     private FilmsListAdapter rvAdapter;
     private List<Film> films;
     private boolean isFirstLoading = true;
-
     private LinearLayoutManager linearLayoutManager;
     private boolean isLoading;
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
-
     private ActionMode actionMode;
-
+    private FilmsListAdapter adapterForSearch;
     private android.view.ActionMode.Callback callback = new android.view.ActionMode.Callback() {
 
         public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
@@ -78,22 +75,34 @@ public class FilmsListFragment extends BaseFragment {
             mSearchView.addTextChangedListener(new TextWatcher() {
 
                 @Override
-                public void onTextChanged(CharSequence s, int start,
-                                          int before, int count) {
-                    // TODO Auto-generated method stub
-
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    //filteredList.clear();
                 }
 
                 @Override
-                public void beforeTextChanged(CharSequence s, int start,
-                                              int count, int after) {
+                public void onTextChanged(CharSequence s, int start,
+                                          int before, int count) {
+                    String newText = s.toString().toLowerCase();
 
+
+                    final List<Film> filteredList = new ArrayList<>();
+
+                    for (int i = 0; i < films.size(); i++) {
+
+                        final String text = films.get(i).getNameEng().toLowerCase();
+                        if (text.contains(newText)) {
+                            filteredList.add(films.get(i));
+                        }
+                    }
+                    adapterForSearch = new FilmsListAdapter((MainActivity) getActivity(), filteredList);
+                    rv.setAdapter(adapterForSearch);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    // search here
+
                 }
+
             });
             return true;
         }
@@ -108,6 +117,8 @@ public class FilmsListFragment extends BaseFragment {
 
         public void onDestroyActionMode(android.view.ActionMode mode) {
             actionMode = null;
+            rv.setAdapter(rvAdapter);
+            rvAdapter.notifyDataSetChanged();
         }
     };
 
@@ -115,10 +126,13 @@ public class FilmsListFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item11) {
-            if (actionMode == null)
+            if (actionMode == null) {
                 actionMode = getActivity().startActionMode(callback);
-            else
+                //rv.setAdapter(adapterForSearch);
+            } else {
                 actionMode.finish();
+
+            }
 
         }
         return super.onOptionsItemSelected(item);
@@ -140,8 +154,9 @@ public class FilmsListFragment extends BaseFragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(linearLayoutManager);
 
-        filmService.getFilms();
+        adapterForSearch = new FilmsListAdapter((MainActivity) getActivity(), filteredList);
 
+        filmService.getFilms();
 
         return v;
     }
@@ -195,7 +210,6 @@ public class FilmsListFragment extends BaseFragment {
         Random random = new Random();
         return newFilms.subList(random.nextInt(newFilms.size()), newFilms.size());
     }
-
 
     public void setAdapter(ReadingEvent event) {
         if (event.isFlagNetwork() == !ReadingEvent.INFORMATION_FROM_NETWORK) {
