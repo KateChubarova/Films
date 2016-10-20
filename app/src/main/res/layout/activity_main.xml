@@ -16,12 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
             android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 
         <com.ekaterinachubarova.films1.ui.adapter.SwipeEnableViewPager
             android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.nhaarman.supertooltips.ToolTipRelativeLayout
+            android:id="@+id/activity_main_tooltipRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

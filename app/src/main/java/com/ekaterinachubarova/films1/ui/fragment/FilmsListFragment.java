@@ -65,7 +65,6 @@ public class FilmsListFragment extends BaseFragment {
     private int lastVisibleItem, totalItemCount;
     private ActionMode actionMode;
     private FilmsListAdapter adapterForSearch;
-    //InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
     private android.view.ActionMode.Callback callback = new android.view.ActionMode.Callback() {
 
         public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {

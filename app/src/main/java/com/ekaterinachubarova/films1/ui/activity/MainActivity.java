@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,8 +15,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +29,9 @@ import com.ekaterinachubarova.films1.ui.adapter.NavBarPagerAdapter;
 import com.ekaterinachubarova.films1.ui.adapter.SwipeEnableViewPager;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+import com.nhaarman.supertooltips.ToolTipView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -36,7 +44,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  * Created by ekaterinachubarova on 24.09.16.
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ToolTipView.OnToolTipViewClickedListener{
     public static final String BITMAP_STORAGE_KEY = "BITMAP STORAGE KEY";
     private static final int CHOOSE_PICTURE = 1;
     private static final int TAKE_PICTURE = 2;
@@ -54,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alert;
     private ImageView imageView;
     private Uri imageUri;
-    //private ActionMode actionMode;;
+
+    private ToolTipView mRedToolTipView;
+    private ToolTipRelativeLayout toolTipRelativeLayout;
+    private Button chatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new NavBarPagerAdapter(getSupportFragmentManager()));
         pager.setSwipeEnabled(false);
         createDialog();
+
+        toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipRelativeLayout);
+        chatButton = (Button) LayoutInflater.from(this).inflate(R.layout.menu_button, null);
     }
-    
 
     private void choosePhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK,
@@ -186,7 +199,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRedToolTipView();
+            }
+        });
+        menu.getItem(0).setActionView(chatButton);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         return drawerToggle.onOptionsItemSelected(item);
     }
 
@@ -248,5 +276,20 @@ public class MainActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
+    private void addRedToolTipView() {
+        ToolTip toolTip = new ToolTip()
+                .withText("A beautiful Button")
+                .withColor(Color.RED)
+                .withShadow()
+                .withAnimationType(ToolTip.AnimationType.FROM_TOP);
+
+        mRedToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, chatButton);
+        mRedToolTipView.setOnToolTipViewClickedListener(this);
+    }
+
+    @Override
+    public void onToolTipViewClicked(ToolTipView toolTipView) {
+        mRedToolTipView = null;
+    }
 }
 
