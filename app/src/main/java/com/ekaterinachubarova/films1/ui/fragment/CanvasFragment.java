@@ -1,10 +1,10 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
@@ -50,7 +50,6 @@ public class CanvasFragment extends Fragment {
         string.setSpan(new RelativeSizeSpan(1.5f), 6, string.length(), 0);
 
         spannableText.setText(string, TextView.BufferType.SPANNABLE);
-
         return v;
     }
 
@@ -79,13 +78,8 @@ public class CanvasFragment extends Fragment {
         if (isVisibleToUser) {
             randomize();
             cursorClock.startAnim(speedCount);
-
-            SpannableString speedString = new SpannableString(formatter.format(speedCount));
-
-            speedString.setSpan(new BackgroundColorSpan(getColor()), 0, speedString.length(), 0);
-            speedString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, speedString.length(), 0);
-
-            speed.setText(speedString);
+            speed.getBackground().setColorFilter(getColor(), PorterDuff.Mode.SRC_IN);;
+            speed.setText(formatter.format(speedCount));
         }
     }
 

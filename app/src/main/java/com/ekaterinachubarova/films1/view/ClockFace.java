@@ -18,8 +18,8 @@ public class ClockFace extends View {
     private Paint paintRed;
     private Paint paintGreen;
     private Paint paintYellow;
-    private Paint paintBerge;
-    private Paint paintLightGreen;
+    private Paint paintCyan;
+    private Paint paintBlue;
 
     private int heightScreen;
     private int widthOfScreen;
@@ -55,8 +55,8 @@ public class ClockFace extends View {
         canvas.drawArc(rect, 135, 54, false, paintRed);
         canvas.drawArc(rect, 351, 54, false, paintGreen);
         canvas.drawArc(rect, 189, 54, false, paintYellow);
-        canvas.drawArc(rect, 243, 54, false, paintBerge);
-        canvas.drawArc(rect, 297, 54, false, paintLightGreen);
+        canvas.drawArc(rect, 243, 54, false, paintCyan);
+        canvas.drawArc(rect, 297, 54, false, paintBlue);
 
         invalidate();
     }
@@ -64,7 +64,7 @@ public class ClockFace extends View {
     private Paint getInitializePaint(int color) {
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setStrokeWidth(160);
+        paint.setStrokeWidth(120);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         return paint;
@@ -75,15 +75,15 @@ public class ClockFace extends View {
         widthOfScreen = metrics.widthPixels;
         heightScreen = metrics.heightPixels;
 
-        padding = widthOfScreen/6;
+        padding = widthOfScreen/5;
         width = widthOfScreen - padding*2;
 
         rect = new RectF(padding, padding*2, padding + width, padding*2+width );
 
         paintRed = getInitializePaint(Color.RED);
         paintYellow = getInitializePaint(Color.YELLOW);
-        paintBerge = getInitializePaint(Color.CYAN);
-        paintLightGreen = getInitializePaint(Color.BLUE);
+        paintCyan = getInitializePaint(Color.CYAN);
+        paintBlue = getInitializePaint(Color.BLUE);
         paintGreen = getInitializePaint(Color.GREEN);
 
         paintGreen.setStrokeCap(Paint.Cap.ROUND);

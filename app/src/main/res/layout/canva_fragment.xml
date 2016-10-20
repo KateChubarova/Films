@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spannable_text"
         android:layout_centerHorizontal="true"
-        android:paddingTop="180dp"/>
+        android:background="@drawable/rounded_corner"
+        android:layout_marginTop="180dp" />
 
 </RelativeLayout>

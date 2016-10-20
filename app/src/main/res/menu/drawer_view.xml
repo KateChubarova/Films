@@ -5,11 +5,11 @@
             android:id="@+id/list_of_films"
             android:checked="true"
             android:icon="@mipmap/videocamera"
-            android:title="List of films" />
+            android:title="@string/list_of_films" />
         <item
             android:id="@+id/empty_fragment"
             android:icon="@mipmap/ic_launcher"
-            android:title="Map" />
+            android:title="@string/map" />
     </group>
 
     <item

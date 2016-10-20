@@ -46,11 +46,11 @@ public class CursorClock extends View{
         int middleCornerX = (int) (measure.getCenterX() + rMiddle * Math.cos(getAlphaDegree(alpha)));
         int middleCornerY = (int) (measure.getCenterY() + rMiddle * Math.sin(getAlphaDegree(alpha)));
 
-        int leftCornerX = (int) (measure.getCenterX() + rLeft * Math.cos(getAlphaDegree(alpha + 4)));
-        int leftCornerY = (int) (measure.getCenterY() + rLeft * Math.sin(getAlphaDegree(alpha + 4)));
+        int leftCornerX = (int) (measure.getCenterX() + rLeft * Math.cos(getAlphaDegree(alpha + 2)));
+        int leftCornerY = (int) (measure.getCenterY() + rLeft * Math.sin(getAlphaDegree(alpha + 2)));
 
-        int rightCornerX = (int) (measure.getCenterX() + rRight * Math.cos(getAlphaDegree(alpha - 4)));
-        int rightCornerY = (int) (measure.getCenterY() + rRight * Math.sin(getAlphaDegree(alpha - 4)));
+        int rightCornerX = (int) (measure.getCenterX() + rRight * Math.cos(getAlphaDegree(alpha - 2)));
+        int rightCornerY = (int) (measure.getCenterY() + rRight * Math.sin(getAlphaDegree(alpha - 2)));
 
         Path path = new Path();
 
@@ -65,9 +65,9 @@ public class CursorClock extends View{
         measure = Measurement.newInstance();
         paint = new Paint();
 
-        rLeft = measure.getR() + 200;
-        rRight = measure.getR() + 200;
-        rMiddle = measure.getR() + 100;
+        rLeft = measure.getR() + 120;
+        rRight = measure.getR() + 120;
+        rMiddle = measure.getR() + 80;
 
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(50);

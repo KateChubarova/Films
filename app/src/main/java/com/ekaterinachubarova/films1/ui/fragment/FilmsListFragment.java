@@ -1,5 +1,6 @@
 package com.ekaterinachubarova.films1.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -63,6 +65,7 @@ public class FilmsListFragment extends BaseFragment {
     private int lastVisibleItem, totalItemCount;
     private ActionMode actionMode;
     private FilmsListAdapter adapterForSearch;
+    //InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
     private android.view.ActionMode.Callback callback = new android.view.ActionMode.Callback() {
 
         public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
@@ -76,7 +79,6 @@ public class FilmsListFragment extends BaseFragment {
 
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    //filteredList.clear();
                 }
 
                 @Override
@@ -119,6 +121,8 @@ public class FilmsListFragment extends BaseFragment {
             actionMode = null;
             rv.setAdapter(rvAdapter);
             rvAdapter.notifyDataSetChanged();
+            toggle(getActivity());
+            //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         }
     };
 
@@ -128,10 +132,10 @@ public class FilmsListFragment extends BaseFragment {
         if (item.getItemId() == R.id.item11) {
             if (actionMode == null) {
                 actionMode = getActivity().startActionMode(callback);
-                //rv.setAdapter(adapterForSearch);
+                toggle(getActivity());
+                //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             } else {
                 actionMode.finish();
-
             }
 
         }
@@ -253,6 +257,15 @@ public class FilmsListFragment extends BaseFragment {
             }
         });
     }
+
+    public static void toggle(Activity activity){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm.isActive()){
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0); // hide
+        } else {
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY); // show
+        }
+    }//end method
 
     public void setUpComponent(AppComponent appComponent) {
         appComponent.inject(this);
