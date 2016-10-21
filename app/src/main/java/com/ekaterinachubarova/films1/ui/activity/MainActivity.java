@@ -86,12 +86,6 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
         toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipRelativeLayout);
         chatButton = (ImageButton) LayoutInflater.from(this).inflate(R.layout.menu_button, null);
 
-//        chatButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
-//            }
-//        });
     }
 
 
@@ -287,6 +281,8 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
     }
 
     private void addRedToolTipView() {
+        if (mRedToolTipView != null)
+            return;
         ToolTip toolTip = new ToolTip()
                 .withText("You have no massages. Please, check later.")
                 .withColor(Color.CYAN)
@@ -299,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
 
     @Override
     public void onToolTipViewClicked(ToolTipView toolTipView) {
-        if (mRedToolTipView != null)
         mRedToolTipView = null;
     }
 }
