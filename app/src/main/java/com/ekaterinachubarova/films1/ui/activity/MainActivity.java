@@ -20,9 +20,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ekaterinachubarova.films1.R;
 import com.ekaterinachubarova.films1.ui.adapter.NavBarPagerAdapter;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
 
     private ToolTipView mRedToolTipView;
     private ToolTipRelativeLayout toolTipRelativeLayout;
-    private Button chatButton;
+    private ImageButton chatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +84,16 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
         createDialog();
 
         toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipRelativeLayout);
-        chatButton = (Button) LayoutInflater.from(this).inflate(R.layout.menu_button, null);
+        chatButton = (ImageButton) LayoutInflater.from(this).inflate(R.layout.menu_button, null);
+
+//        chatButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
+
 
     private void choosePhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK,
@@ -201,10 +210,11 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.chat_menu, menu);
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Hello world", Toast.LENGTH_LONG).show();
                 addRedToolTipView();
             }
         });
@@ -278,8 +288,8 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
 
     private void addRedToolTipView() {
         ToolTip toolTip = new ToolTip()
-                .withText("A beautiful Button")
-                .withColor(Color.RED)
+                .withText("You have no massages. Please, check later.")
+                .withColor(Color.CYAN)
                 .withShadow()
                 .withAnimationType(ToolTip.AnimationType.FROM_TOP);
 
@@ -289,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements ToolTipView.OnToo
 
     @Override
     public void onToolTipViewClicked(ToolTipView toolTipView) {
+        if (mRedToolTipView != null)
         mRedToolTipView = null;
     }
 }
